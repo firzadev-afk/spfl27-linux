@@ -108,6 +108,17 @@ Locate a non-standard prefix with `SPFL2027_PREFIX=/path/to/prefix`.
 - Backups are kept: `xinput1_3.dll.bak`, `download-backup/`.
 - If something breaks, restore from the backups or re-run `spfl2027-fix.sh`.
 
+## License
+
+Free for the **community, non-commercial only** — you may use, copy, modify, and
+share this project freely, but you may **not sell it** or use it commercially.
+License: **CC BY-NC 4.0** (see `LICENSE`).
+
+Not covered: the game, SmokePatch installers/CPKs and all game content belong to
+SmokePatch (pessmokepatch.com) — get them from the official site and follow
+their terms. Third-party icons in `native/assets/icons/` keep their own license
+(`native/assets/ICONS-LICENSE.txt`, Lucide/ISC).
+
 ## If you are confused
 
 Ask an AI agent (OpenCode, Claude, etc.). It can read this repository, run

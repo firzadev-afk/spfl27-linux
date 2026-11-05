@@ -5,7 +5,7 @@ edition = "2021"
 rust-version = "1.88"
 authors = ["Alfarezfirza"]
 description = "SP Football Life 2027 Playtools - native Linux/Steam Deck"
-license = "MIT"
+license = "CC-BY-NC-4.0"
 publish = false
 
 [lib]
