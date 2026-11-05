@@ -1,0 +1,32 @@
+[package]
+name = "spfl27"
+version = "1.0.0"
+edition = "2021"
+rust-version = "1.88"
+authors = ["Alfarezfirza"]
+description = "SP Football Life 2027 Playtools - native Linux/Steam Deck"
+license = "MIT"
+publish = false
+
+[lib]
+name = "spfl27"
+path = "src/lib.rs"
+
+[[bin]]
+name = "spfl27"
+path = "src/main.rs"
+
+[dependencies]
+iced = { version = "0.14", features = ["svg", "tokio"] }
+arboard = "3"
+futures = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rfd = "0.17.2"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

@@ -1,0 +1,13 @@
+# Build output
+native/target/
+*.log
+*.backup
+sider-app.log
+__pycache__/
+.DS_Store
+# Game install artifacts (never commit)
+Games/sp-football-life-2027/
+download-backup/
+
+# Local OpenCode config (personal skills path)
+opencode.jsonc
