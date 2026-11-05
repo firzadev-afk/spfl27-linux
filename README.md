@@ -9,6 +9,28 @@ Rust code is open and compiles from source, and every step is verifiable. If any
 is unclear, ask an AI agent (e.g. OpenCode) — it can read this repository and run
 the checks for you.
 
+## Screenshots
+
+SPFL 2027 menu group (all main tools in one place):
+
+![COSMIC menu group SPFL2027](01-cosmic-menu-spfl2027-group.png)
+
+Playtools app (setup wizard):
+
+![Playtools app](02-playtools-app.png)
+
+FL27 Settings (1600x900, 60 fps, VSync Enable1):
+
+![FL27 Settings](03-fl27-settings.png)
+
+FL27 Switcher (theme, lighting, gameplay, controller buttons):
+
+![FL27 Switcher](04-fl27-switcher.png)
+
+The game actually running on Linux (Football Life 2027 main menu):
+
+![Game running](05-game-running.png)
+
 ## What you need (prerequisites)
 
 | Component | Minimum | Check command |
