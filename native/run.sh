@@ -8,7 +8,7 @@ BIN="target/release/spfl27"
 needs_build=false
 if [[ ! -x "$BIN" ]]; then
   needs_build=true
-elif [[ -n "$(find src Cargo.toml Cargo.lock -newer "$BIN" -print -quit 2>/dev/null)" ]]; then
+elif [[ -n "$(find src assets Cargo.toml Cargo.lock -newer "$BIN" -print -quit 2>/dev/null)" ]]; then
   echo "Sources changed since last build — rebuilding..."
   needs_build=true
 fi
