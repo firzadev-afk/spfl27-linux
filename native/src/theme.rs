@@ -22,8 +22,14 @@ pub mod space {
     pub const HUGE: f32 = 40.0;
     /// Horizontal page margin.
     pub const GUTTER: f32 = 28.0;
-    /// Sidebar width. Page content uses the remaining window width.
+    /// Sidebar width. `SIDEBAR + 2*GUTTER` is the minimum horizontal chrome.
     pub const SIDEBAR: f32 = 208.0;
+    /// Fixed width for small form labels.
+    pub const FIELD_LABEL_W: f32 = 64.0;
+    /// Fixed height for the Find-game result list.
+    pub const SHEET_HEIGHT: f32 = 472.0;
+    /// Fixed height for the Activity log drawer.
+    pub const LOG_HEIGHT: f32 = 88.0;
 }
 
 pub mod text {

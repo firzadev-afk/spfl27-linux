@@ -2504,12 +2504,12 @@ impl App {
                     ),
                     column![
                         row![
-                            text("From").size(tsize::SMALL).width(Length::Fixed(64.0)),
+                            text("From").size(tsize::SMALL).width(Length::Fixed(space::FIELD_LABEL_W)),
                             text(src.clone()).size(tsize::SMALL)
                         ]
                         .spacing(space::MD),
                         row![
-                            text("To").size(tsize::SMALL).width(Length::Fixed(64.0)),
+                            text("To").size(tsize::SMALL).width(Length::Fixed(space::FIELD_LABEL_W)),
                             text(dest).size(tsize::SMALL)
                         ]
                         .spacing(space::MD),
@@ -2556,7 +2556,7 @@ impl App {
                     ]
                     .spacing(space::MD)
                     .align_y(Alignment::Center),
-                    scrollable(inner).height(Length::Fixed(472.0)), // sheet must fit a 620px window
+                    scrollable(inner).height(Length::Fixed(space::SHEET_HEIGHT)), // sheet must fit a 620px window
                 ]
                 .spacing(space::LG)
                 .max_width(space::SIDEBAR * 4.0)
@@ -2625,7 +2625,7 @@ impl App {
             }
             body = body.push(
                 scrollable(lines)
-                    .height(Length::Fixed(88.0))
+                    .height(Length::Fixed(space::LOG_HEIGHT))
                     .width(Length::Fill),
             );
         }
@@ -2989,7 +2989,7 @@ impl App {
             }
             body = body.push(
                 scrollable(lines)
-                    .height(Length::Fixed(88.0))
+                    .height(Length::Fixed(space::LOG_HEIGHT))
                     .width(Length::Fill),
             );
         }
