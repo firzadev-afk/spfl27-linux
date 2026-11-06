@@ -65,50 +65,39 @@ pub const BRAND: &str = "SPFL27 Playtools";
 pub fn page_intro(page: Page) -> (&'static str, &'static str) {
     match page {
         Page::Home => (
-            "Home — your starting point",
-            "This page shows whether the game, Sider and your save are detected, \
-             and the big PLAY button launches everything (Sider first, then the game). \
-             If no game folder is selected, press Change next to the game title, or run \
-             the first-time setup from the Install page.",
+            "Home — ready to play?",
+            "This page shows whether the game and its tools are found. Press PLAY to launch \
+             everything — Sider, the small game helper, starts before the game.",
         ),
         Page::Install => (
-            "Install — in 3 steps",
-            "You need 2 files from SmokePatch (pessmokepatch.com): the base installer \
-             (SPFL27_setup.exe) and the latest update. Step 1: paste the installer path. \
-             Step 2: open Lutris and install from the local script (its path is copied \
-             for you). Step 3: run the update file. Maintenance below covers the Steam \
-             shortcut and the Lutris cache.",
+            "Install — 3 easy steps",
+            "You need 2 files from SmokePatch (pessmokepatch.com): the installer and the \
+             latest update. The three steps below walk you through the rest.",
         ),
         Page::System => (
             "System — what Linux needs",
-            "Green OK means present (automatically skipped). Missing items install with \
-             one click through your distro's package manager — admin rights required. \
-             On Steam Deck, Lutris comes via Flatpak and Wine rides along with it.",
+            "This page checks the Linux programs the game needs. Present items are \
+             skipped; missing ones install with one click, and you will be asked for your password.",
         ),
         Page::Switcher => (
             "Switcher — change how it plays",
-            "Gameplay swaps physics/AI variants without reinstalling. Controller swaps \
-             the button icons (PlayStation/Xbox). Classics adds legends to career modes. \
-             Source files ship with the game itself (its switcher folder); your choices \
-             are copied into Data/download and remembered.",
+            "Pick different gameplay, button-icon and legend packs. Source files ship \
+             with the game itself; your picks are copied into its data folder.",
         ),
         Page::Settings => (
             "Settings — display & controller",
-            "Same options as the original Settings.exe: screen mode, V-Sync and input \
-             (XInput for Steam, DirectInput for PlayStation pads). Saved into settings.dat \
-             with an automatic backup on the first change. If the file is missing, launch \
-             the game once to create a save.",
+            "The same options the game's own Settings tool offers: screen mode, V-Sync \
+             and controller type. Saved into the game's settings file with an automatic backup first.",
         ),
         Page::Saves => (
             "Saves — protect your progress",
-            "Career and match progress lives in the KONAMI folder inside the Wine prefix — \
-             uninstalling the game deletes it. Back up here in one click (timestamped copies \
-             under ~/spfl27-backups). Restoring overwrites, so it asks twice.",
+            "Your career and match progress lives in the game's save folder — inside its \
+             Wine installation (uninstalling the game deletes it). Back up here in one click.",
         ),
         Page::Help => (
             "Help — fixes that work",
             "The most common problems and their fixes, in the order you should try them. \
-             If nothing helps, the log panel at the bottom shows exactly what the app did.",
+             Keyboard shortcuts are listed at the bottom.",
         ),
     }
 }
@@ -130,33 +119,23 @@ pub fn setup_intro(step: usize) -> (&'static str, &'static str) {
     match step {
         0 => (
             "Welcome to SPFL27 Playtools",
-            "SPFL27 Playtools prepares and starts SP Football Life 2027 on Linux and \
-             Steam Deck. It guides you in 3 steps. Step 1 points the app to your game \
-             folder. Step 2 checks the Linux programs the game needs, such as Lutris, \
-             Wine, and graphics drivers, and installs only what is missing. Step 3 takes \
-             you to the Home page, where the PLAY button starts Sider first and then the \
-             game. Before you start, get 2 files from SmokePatch at pessmokepatch.com: \
-             the base installer called SPFL27_setup.exe and the latest update file. If the \
-             game is not installed yet, finish this short wizard first and then follow the \
-             Install page. Every file path the app uses is shown on screen, so you always \
-             know what is used and where your files are.",
+            "This app gets the game ready on Linux and Steam Deck in three short steps: \
+             find your game folder, install only what is missing, then press PLAY. You need \
+             two files from pessmokepatch.com: the installer and the latest update.",
         ),
         1 => (
             "Step 1 of 3 — Find your game",
-            "Press Search to look for the game in the usual Lutris places. You can also \
-              press Browse to pick the folder yourself, or paste the path below. The folder \
-              name ends with 'SP Football Life 2027'. A green check means the game file was \
-              found inside. No game yet? Finish this wizard, then use the Install page.",
+            "Press Search, or Browse to pick the folder yourself. A green check means the \
+             game was found. No game yet? Finish this setup, then use the Install page.",
         ),
         2 => (
             "Step 2 of 3 — Fix the system",
-            "These Linux programs are needed to install and run the game. Only the missing \
-             ones are installed — present items are skipped. One click, admin rights required.",
+            "Check the Linux programs the game needs. Only the missing ones are installed, \
+             and you will be asked for your password.",
         ),
         _ => (
             "Step 3 of 3 — Ready to play",
-            "Everything is in place. Go to Home and press the big PLAY button — it starts \
-             Sider first, then the game, exactly like the original launcher. Have fun!",
+            "Everything is in place. Go to Home and press the big PLAY button — it starts Sider first, then the game. Have fun!",
         ),
     }
 }
@@ -249,6 +228,10 @@ pub enum Message {
     ApplyManualPath,
     BrowseFolder,
     BrowsePicked(Option<PathBuf>),
+    BrowseSetupExe,
+    BrowseSetupPicked(Option<PathBuf>),
+    BrowseUpdate,
+    BrowseUpdatePicked(Option<PathBuf>),
     PickCandidate(PathBuf),
     // setup wizard
     SetupNext,
@@ -377,7 +360,7 @@ impl App {
         app.refresh_all();
         app.push_log(format!("Ready. System: {}", app.dist));
         if app.setup {
-            app.push_log("First run — opening the setup wizard.".into());
+            app.push_log("First run — opening Setup.".into());
         }
         (app, Task::none())
     }
@@ -434,7 +417,7 @@ impl App {
     fn refresh_settings(&mut self) {
         match self.game_dir.as_ref().and_then(|g| find_settings_dat(g)) {
             None => {
-                self.dat_path = "settings.dat not found yet — launch the game once to create a save.".into();
+                self.dat_path = "the game settings file not found yet — launch the game once to create it.".into();
             }
             Some(d) => {
                 self.dat_path = d.display().to_string();
@@ -574,6 +557,47 @@ impl App {
                     return self.apply_game_path(&raw);
                 }
             },
+            Message::BrowseSetupExe => {
+                return self.spawn(move |tx| {
+                    let picked = rfd::FileDialog::new()
+                        .set_title("Pick SPFL27_setup.exe")
+                        .add_filter("Windows installers", &["exe"])
+                        .pick_file();
+                    let _ = tx.unbounded_send(Message::BrowseSetupPicked(picked));
+                    let _ = tx.unbounded_send(Message::WorkerDone("browse-setup".into()));
+                });
+            }
+            Message::BrowseSetupPicked(opt) => match opt {
+                None => {}
+                Some(p) => {
+                    self.setup_exe = p.to_string_lossy().into_owned();
+                    let raw = self.setup_exe.trim().to_string();
+                    self.push_log(format!("Installer set: {raw}"));
+                    if std::path::Path::new(&raw).is_file() {
+                        self.toast(ToastKind::Success, "Installer path set — now press Open Lutris.");
+                    } else {
+                        self.toast(ToastKind::Error, "That file was not found. Check the path.");
+                    }
+                }
+            },
+            Message::BrowseUpdate => {
+                return self.spawn(move |tx| {
+                    let picked = rfd::FileDialog::new()
+                        .set_title("Pick the SPFL27 update file")
+                        .add_filter("Windows installers", &["exe"])
+                        .pick_file();
+                    let _ = tx.unbounded_send(Message::BrowseUpdatePicked(picked));
+                    let _ = tx.unbounded_send(Message::WorkerDone("browse-update".into()));
+                });
+            }
+            Message::BrowseUpdatePicked(opt) => match opt {
+                None => {}
+                Some(p) => {
+                    self.update_file = p.to_string_lossy().into_owned();
+                    self.push_log(format!("Update file set: {}", self.update_file));
+                    self.toast(ToastKind::Info, "Update file selected — press Run update to install it.");
+                }
+            },
             Message::PickCandidate(p) => {
                 let raw = p.to_string_lossy().into_owned();
                 return self.apply_game_path(&raw);
@@ -659,7 +683,10 @@ impl App {
                         let _ = std::process::Command::new(p).spawn();
                         self.push_log("Lutris opened: + → Install from a local file → paste the path.".into());
                     }
-                    None => self.push_log("Lutris is not installed — see the System page.".into()),
+                    None => {
+                        self.push_log("Lutris is not installed — see the System page.".into());
+                        self.toast(ToastKind::Error, "Lutris is not installed — see the System page.");
+                    }
                 }
             }
             Message::CopyYaml => {
@@ -683,6 +710,7 @@ impl App {
                 }
                 let Some(wine) = which("wine") else {
                     self.push_log("Wine is missing — install it on the System page.".into());
+                    self.toast(ToastKind::Error, "Wine is missing — install it on the System page.");
                     return Task::none();
                 };
                 let wine = wine.to_string_lossy().into_owned();
@@ -835,7 +863,7 @@ impl App {
                     return Task::none();
                 };
                 match find_settings_dat(&g) {
-                    None => self.push_log("settings.dat not found.".into()),
+                    None => self.push_log("Game settings file not found.".into()),
                     Some(d) => {
                         let (c, s, v) =
                             (self.set_ctrl.clone(), self.set_screen.clone(), self.set_vsync.clone());
@@ -849,7 +877,7 @@ impl App {
             }
             Message::BackupNow => {
                 let Some(k) = self.konami() else {
-                    self.push_log("KONAMI folder not found.".into());
+                    self.push_log("Save folder not found.".into());
                     return Task::none();
                 };
                 let home = std::env::var("HOME").unwrap_or_else(|_| "/".into());
@@ -877,8 +905,8 @@ impl App {
             }
             Message::RestoreConfirm => {
                 let Some(k) = self.konami() else {
-                    self.push_log("KONAMI folder not found.".into());
-                    self.toast(ToastKind::Error, "KONAMI folder not found");
+                    self.push_log("Save folder not found.".into());
+                    self.toast(ToastKind::Error, "Save folder not found");
                     return Task::none();
                 };
                 let src = PathBuf::from(self.restore_path.trim());
@@ -926,39 +954,62 @@ impl App {
             Message::LaunchGame => {
                 let Some(g) = self.game_dir.clone() else {
                     self.push_log("Select the game folder first (Home page, Change button).".into());
+                    self.toast(ToastKind::Error, "Select the game folder first (Home page).");
                     return Task::none();
                 };
                 let st = game_status(Some(&g));
                 if !st.game {
                     self.push_log(format!("FL_2027.exe not found in {}", g.display()));
+                    self.toast(
+                        ToastKind::Error,
+                        "Game not found there — pick the folder ending in 'SP Football Life 2027'.",
+                    );
                     return Task::none();
                 }
                 if !st.wine {
                     if st.lutris {
                         self.push_log("No system wine — launching through Lutris instead.".into());
+                        self.toast(ToastKind::Info, "No system Wine — launching through Lutris.");
                         return self.spawn(move |tx| {
                             match launch_via_lutris() {
                                 Ok(()) => {
                                     let _ = tx.unbounded_send(Message::Log(
                                         "Launched via Lutris.".into(),
                                     ));
+                                    let _ = tx.unbounded_send(Message::ShowToast(
+                                        ToastKind::Success,
+                                        "Launching through Lutris…".into(),
+                                    ));
                                 }
                                 Err(e) => {
                                     let _ = tx.unbounded_send(Message::Log(format!("ERROR: {e}")));
+                                    let _ = tx.unbounded_send(Message::ShowToast(
+                                        ToastKind::Error,
+                                        format!("Could not launch via Lutris: {e}"),
+                                    ));
                                 }
                             }
                             let _ = tx.unbounded_send(Message::WorkerDone("launch".into()));
                         });
                     }
                     self.push_log("Wine is missing — install it on the System page.".into());
+                    self.toast(ToastKind::Error, "Wine is missing — install it on the System page.");
                     return Task::none();
                 }
                 self.push_log(format!("Launching: {}", g.display()));
                 return self.spawn(move |tx| {
                     if let Err(e) = launch_game(&g) {
                         let _ = tx.unbounded_send(Message::Log(format!("ERROR: {e}")));
+                        let _ = tx.unbounded_send(Message::ShowToast(
+                            ToastKind::Error,
+                            format!("Could not launch: {e}"),
+                        ));
                     } else {
                         let _ = tx.unbounded_send(Message::Log("Sider + game launched.".into()));
+                        let _ = tx.unbounded_send(Message::ShowToast(
+                            ToastKind::Success,
+                            "Launching — Sider first, then the game.".into(),
+                        ));
                     }
                     let _ = tx.unbounded_send(Message::WorkerDone("launch".into()));
                 });
@@ -1133,6 +1184,18 @@ fn chip(label: impl Into<String>, dark: bool) -> iced::Element<'static, Message>
         .padding([space::XS, space::MD])
         .style(theme::pill_style(c.surface_2, c.border))
         .into()
+}
+
+/// One-line display for a long path: keeps both ends, drops the middle.
+/// Non-path text (sentences) is returned unchanged.
+fn short_path(p: &str, max: usize) -> String {
+    if !p.contains('/') || p.chars().count() <= max {
+        return p.to_string();
+    }
+    let keep = (max - 1) / 2;
+    let head: String = p.chars().take(keep).collect();
+    let tail: String = p.chars().rev().take(keep).collect::<String>().chars().rev().collect();
+    format!("{head}…{tail}")
 }
 
 /// Monospace chip for a file path.
@@ -1397,7 +1460,7 @@ impl App {
         let game_name = self
             .game_dir
             .as_ref()
-            .map(|p| p.display().to_string())
+            .map(|p| short_path(&p.to_string_lossy(), 88))
             .unwrap_or_else(|| "No game folder selected".into());
         let version = self
             .game_dir
@@ -1455,7 +1518,7 @@ impl App {
             ("zap", "Game", st.game, "found", "not found"),
             ("layers", "Sider", st.sider, "running", "not installed"),
             ("monitor", "Aspect fix", st.aspect, "installed", "not installed"),
-            ("save", "Save", st.settings, "settings.dat found", "not found yet"),
+            ("save", "Save", st.settings, "save file found", "not found yet"),
         ];
         // 2x2 grid: readable at 720p, breathable at 1440p.
         let mut grid: Column<Message> = column![].spacing(space::MD);
@@ -1530,11 +1593,19 @@ impl App {
             "Get the installer",
             "Download SPFL27_setup.exe and the latest update from pessmokepatch.com, then paste the installer path here.",
             column![
-                text_input("Path to SPFL27_setup.exe …", &self.setup_exe)
-                    .on_input(Message::SetupExeChanged)
-                    .on_submit(Message::ApplySetupExe)
-                    .padding(space::MD)
-                    .style(theme::input_style(dark)),
+                row![
+                    text_input("Path to SPFL27_setup.exe …", &self.setup_exe)
+                        .on_input(Message::SetupExeChanged)
+                        .on_submit(Message::ApplySetupExe)
+                        .padding(space::MD)
+                        .style(theme::input_style(dark))
+                        .width(Length::Fill),
+                    button(row![icon("folder-open", isize::SM), text("Browse").size(tsize::BODY)].spacing(space::SM))
+                        .on_press(Message::BrowseSetupExe)
+                        .style(theme::btn_ghost(dark)),
+                ]
+                .spacing(space::SM)
+                .align_y(Alignment::Center),
             ]
             .spacing(space::SM)
         .into()
@@ -1563,11 +1634,19 @@ impl App {
             "Apply the update",
             "Close the game first, paste the update file (SPFL27_*.exe), then run it. Check the version on the main menu afterwards.",
             column![
-                text_input("Path to SPFL27_*.exe (update) …", &self.update_file)
-                    .on_input(Message::UpdateFileChanged)
-                    .on_submit(Message::RunUpdate)
-                    .padding(space::MD)
-                    .style(theme::input_style(dark)),
+                row![
+                    text_input("Path to SPFL27_*.exe (update) …", &self.update_file)
+                        .on_input(Message::UpdateFileChanged)
+                        .on_submit(Message::RunUpdate)
+                        .padding(space::MD)
+                        .style(theme::input_style(dark))
+                        .width(Length::Fill),
+                    button(row![icon("folder-open", isize::SM), text("Browse").size(tsize::BODY)].spacing(space::SM))
+                        .on_press(Message::BrowseUpdate)
+                        .style(theme::btn_ghost(dark)),
+                ]
+                .spacing(space::SM)
+                .align_y(Alignment::Center),
                 button(row![icon("download", isize::SM), text("Run update").size(tsize::BODY)].spacing(space::SM))
                     .on_press(Message::RunUpdate)
                     .style(theme::btn_primary(dark)),
@@ -1662,7 +1741,7 @@ impl App {
             col = col.push(busy_bar(dark, &self.sweep));
         }
         col = col.push(sub(
-            "Checked items are skipped automatically. Installing needs admin rights (polkit).",
+            "Checked items are skipped automatically. Installing asks for your password.",
             dark,
         ));
         col.into()
@@ -1679,7 +1758,7 @@ impl App {
 
         match &src {
             Some(s) => {
-                col = col.push(path_chip(&format!("Source (ships with the game): {}", s.display()), dark));
+                col = col.push(path_chip(format!("Source (ships with the game): {}", short_path(&s.to_string_lossy(), 64)), dark));
             }
             None => {
                 col = col.push(note_row(dark, "The game's 'switcher' folder was not found — install the full game from SmokePatch."));
@@ -1761,12 +1840,12 @@ impl App {
         .spacing(space::LG)
         .padding(space::GUTTER);
 
-        col = col.push(path_chip(&format!("File: {}", self.dat_path), dark));
+        col = col.push(path_chip(format!("File: {}", short_path(&self.dat_path, 84)), dark));
 
         let combos = [
-            ("controller", "Controller", "XInput when playing through Steam; DirectInput for PlayStation pads.", vec!["DirectInput".to_string(), "XInput".to_string()], self.set_ctrl.clone()),
+            ("controller", "Controller", "Steam and Xbox pads: XInput. PlayStation pads: DirectInput.", vec!["DirectInput".to_string(), "XInput".to_string()], self.set_ctrl.clone()),
             ("screen", "Screen mode", "Full Screen for matches; Windowed if you multitask.", vec!["Windowed".to_string(), "Full Screen".to_string()], self.set_screen.clone()),
-            ("vsync", "V-Sync", "Enable2 gives most people the smoothest frame rate.", vec!["Disabled".to_string(), "Enable1".to_string(), "Enable2".to_string()], self.set_vsync.clone()),
+            ("vsync", "V-Sync", "Enable1 caps 60 fps and reduces heat (recommended).", vec!["Disabled".to_string(), "Enable1".to_string(), "Enable2".to_string()], self.set_vsync.clone()),
         ];
         let mut card_col: Column<Message> = column![].spacing(space::MD);
         for (kind, label, caption, opts, cur) in combos {
@@ -1807,8 +1886,8 @@ impl App {
         let kon = self
             .konami()
             .map(|p| p.display().to_string())
-            .unwrap_or_else(|| "KONAMI folder not found — launch the game once to create a save.".into());
-        col = col.push(path_chip(&format!("Location: {kon}"), dark));
+            .unwrap_or_else(|| "the game save folder not found yet — launch the game once to create it.".into());
+        col = col.push(path_chip(format!("Location: {}", short_path(&kon, 84)), dark));
 
         col = col.push(
             container(
@@ -1884,10 +1963,10 @@ impl App {
             .padding(space::GUTTER);
         let rows = [
             ("Black screen in Game Mode", "Set ENABLE_GAMESCOPE_WSI=0 (the installer already does this)."),
-            ("Controller not detected", "Install the latest update; play via Steam (XInput)."),
+            ("Controller not detected", "Install the latest update; play via Steam."),
             ("Flickering / missing textures", "Clear the Lutris cache (Install → Maintenance) and reinstall."),
             ("Black bars in menus", "Normal — the aspect fix only applies during matches."),
-            ("Where is my data?", "Game folder (Home page, Change button) · switcher sources (Switcher page) · settings.dat (Settings page) · saves (Saves page)."),
+            ("Where is my data?", "Game folder (Home page, Change button) · switcher sources (Switcher page) · game settings file (Settings page) · saves (Saves page)."),
         ];
         for (k, v) in rows {
             col = col.push(
@@ -1899,9 +1978,29 @@ impl App {
                     .width(Length::Fill)
             );
         }
+        col = col.push(
+            container(
+                column![
+                    text("Keyboard shortcuts").size(tsize::BODY_LG),
+                    row![chip("F5", dark), sub("Recheck dependencies on the System page", dark)]
+                        .spacing(space::SM)
+                        .align_y(Alignment::Center),
+                    row![chip("Ctrl+L", dark), sub("Show or hide the Activity log", dark)]
+                        .spacing(space::SM)
+                        .align_y(Alignment::Center),
+                    row![chip("Esc", dark), sub("Close any open dialog", dark)]
+                        .spacing(space::SM)
+                        .align_y(Alignment::Center),
+                ]
+                .spacing(space::MD),
+            )
+            .padding(space::MD)
+            .style(theme::card_style(dark))
+            .width(Length::Fill),
+        );
         col = col.push(sub(
             format!(
-                "{} v{} — built with Rust and iced. The core logic matches the tested Python version one to one.",
+                "{} v{} — built with Rust and iced. The core logic is covered by automated tests.",
                 BRAND,
                 env!("CARGO_PKG_VERSION")
             ),
@@ -1990,7 +2089,7 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
             let dest = self
                 .konami()
                 .map(|k| k.display().to_string())
-                .unwrap_or_else(|| "KONAMI folder not found".to_string());
+                .unwrap_or_else(|| "Save folder not found".to_string());
             column![
                 row![icon("save", isize::LG), text("Restore save").size(tsize::H2)]
                     .spacing(space::MD)
@@ -2340,14 +2439,16 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
             }
         };
 
+        let back: iced::Element<'_, Message> = if self.setup_step > 0 {
+            button(row![icon("arrow-left", isize::SM), text("Back").size(tsize::BODY)].spacing(space::SM))
+                .on_press(Message::SetupBack)
+                .style(theme::btn_ghost(dark))
+                .into()
+        } else {
+            Space::new().width(Length::Shrink).into()
+        };
         let nav = row![
-            if self.setup_step > 0 {
-                button(row![icon("arrow-left", isize::SM), text("Back").size(tsize::BODY)].spacing(space::SM))
-                    .on_press(Message::SetupBack)
-                    .style(theme::btn_ghost(dark))
-            } else {
-                button(text("").size(tsize::MICRO)).style(theme::btn_ghost(dark))
-            },
+            back,
             iced::widget::Space::new().width(Length::Fill),
             button(
                 row![
@@ -2373,7 +2474,7 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
                         icon("spfl-logo", isize::LG),
                         column![
                             text("SP Football Life 2027").size(tsize::H3),
-                            text("Setup wizard").size(tsize::MICRO).color(c.text_muted),
+                            text("Setup").size(tsize::MICRO).color(c.text_muted),
                         ]
                         .spacing(space::XXS),
                         Space::new().width(Length::Fill),
@@ -2687,6 +2788,19 @@ mod ui_tests {
             assert!(!t.is_empty(), "step {step} missing title");
             assert!(b.len() > 80, "step {step} guide too short");
         }
+    }
+
+    #[test]
+    fn short_path_keeps_short_strings_and_truncates_long_paths() {
+        // short strings and non-path prose pass through unchanged
+        assert_eq!(short_path("/games", 88), "/games");
+        assert_eq!(short_path("Choose the game folder.", 88), "Choose the game folder.");
+        let long = "/run/media/alfarez/DataLinux/Games/sp-football-life-2027/drive_c/Program Files (x86)/SP Football Life 2027";
+        let t = short_path(long, 88);
+        assert!(t.chars().count() <= 88);
+        assert!(t.starts_with("/run/media/alfarez/DataLinux"));
+        assert!(t.ends_with("SP Football Life 2027"));
+        assert!(t.contains('…'));
     }
 
     /// Token discipline: view code must use theme tokens, not magic numbers.

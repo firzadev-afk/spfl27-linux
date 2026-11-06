@@ -28,11 +28,11 @@ pub mod space {
 
 pub mod text {
     //! Type scale — 8 steps, no more.
-    pub const MICRO: f32 = 11.0; // log lines, badges
-    pub const SMALL: f32 = 12.0; // captions, hints
-    pub const BODY: f32 = 13.0; // default UI text
-    pub const BODY_LG: f32 = 14.0; // card titles
-    pub const H3: f32 = 15.0;
+    pub const MICRO: f32 = 12.0; // log lines, badges
+    pub const SMALL: f32 = 13.0; // captions, hints
+    pub const BODY: f32 = 14.0; // default UI text
+    pub const BODY_LG: f32 = 15.0; // card titles
+    pub const H3: f32 = 16.0;
     pub const H2: f32 = 17.0; // page title
     pub const H1: f32 = 20.0; // wizard step title
     pub const DISPLAY: f32 = 26.0; // welcome hero
