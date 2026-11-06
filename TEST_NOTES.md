@@ -61,7 +61,7 @@ cd native && cargo build --release    # release build
   play. For lower power/heat, use `schedutil` or `powersave`
   (`sudo cpupower frequency-set -g schedutil`), at the cost of performance.
 - Close the game via its window; the desktop launcher force-closes the leftover
-  `FL_2027.exe` automatically 30 s after the window is destroyed. From a
-  terminal, press Ctrl+C or run `spfl2027-stop`.
+  `FL_2027.exe` automatically a few seconds after the window is destroyed. From
+  a terminal, press Ctrl+C or run `spfl2027-stop`.
 - If temperature exceeds 80 C sustained, lower in-game graphics (crowd, shadows,
   anti-aliasing) and check cooling.
