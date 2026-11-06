@@ -2454,7 +2454,7 @@ impl App {
             .align_y(Alignment::Center),
         )
         .padding([space::SM, space::MD])
-        .max_width(space::SIDEBAR * 4.0)
+        .max_width(space::MODAL_WIDTH)
         .style(move |_t: &iced::Theme| iced::widget::container::Style {
             background: Some(iced::Background::Color(c.surface_3)),
             border: iced::Border {
@@ -2539,7 +2539,7 @@ impl App {
                     .spacing(space::MD),
                 ]
                 .spacing(space::LG)
-                .max_width(space::SIDEBAR * 4.0)
+                .max_width(space::MODAL_WIDTH)
             }
             Modal::FindGame => {
                 // Same card as wizard step 1, scrollable: search results and the
@@ -2559,7 +2559,7 @@ impl App {
                     scrollable(inner).height(Length::Fixed(space::SHEET_HEIGHT)), // sheet must fit a 620px window
                 ]
                 .spacing(space::LG)
-                .max_width(space::SIDEBAR * 4.0)
+                .max_width(space::MODAL_WIDTH)
             }
         };
         Some(
@@ -2567,7 +2567,7 @@ impl App {
                 container(sheet)
                     .padding(space::XXL)
                     .style(theme::card_style_with(dark, None, 2))
-                    .max_width(space::SIDEBAR * 4.0),
+                    .max_width(space::MODAL_WIDTH),
             )
             .width(Length::Fill)
             .height(Length::Fill)

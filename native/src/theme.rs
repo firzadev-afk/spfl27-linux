@@ -26,6 +26,8 @@ pub mod space {
     pub const SIDEBAR: f32 = 208.0;
     /// Fixed width for small form labels.
     pub const FIELD_LABEL_W: f32 = 64.0;
+    /// Maximum width of modal sheets and toast notifications.
+    pub const MODAL_WIDTH: f32 = 832.0;
     /// Fixed height for the Find-game result list.
     pub const SHEET_HEIGHT: f32 = 472.0;
     /// Fixed height for the Activity log drawer.
