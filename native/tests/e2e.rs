@@ -46,7 +46,7 @@ fn build(root: &Path) -> Fake {
         .unwrap();
     }
     let konami =
-        prefix.join("drive_c/users/deck/Documents/KONAMI/eFootball PES 2021 SEASON UPDATE");
+        prefix.join("drive_c/users/player/Documents/KONAMI/eFootball PES 2021 SEASON UPDATE");
     fs::create_dir_all(&konami).unwrap();
     fs::write(konami.join("settings.dat"), vec![0u8; 64]).unwrap();
     Fake {
@@ -233,7 +233,7 @@ fn e2e_detects_spgame_football_life_save_path() {
         .join("drive_c")
         .join("Program Files (x86)")
         .join(GAME_FOLDER_NAME);
-    let save_dir = prefix.join("drive_c/users/deck/Documents/SPGAME/Football Life");
+    let save_dir = prefix.join("drive_c/users/player/Documents/SPGAME/Football Life");
     fs::create_dir_all(game.join("Data")).unwrap();
     fs::create_dir_all(save_dir.join("2027/save")).unwrap();
     fs::write(game.join("FL_2027.exe"), b"x").unwrap();

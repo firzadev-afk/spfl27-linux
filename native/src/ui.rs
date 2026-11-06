@@ -3247,10 +3247,10 @@ mod ui_tests {
             short_path("Choose the game folder.", 88),
             "Choose the game folder."
         );
-        let long = "/run/media/alfarez/DataLinux/Games/sp-football-life-2027/drive_c/Program Files (x86)/SP Football Life 2027";
+        let long = "/path/to/a-very-long-drive-name/games-with-many-folders/sp-football-life-2027/drive_c/Program Files (x86)/SP Football Life 2027";
         let t = short_path(long, 88);
         assert!(t.chars().count() <= 88);
-        assert!(t.starts_with("/run/media/alfarez/DataLinux"));
+        assert!(t.starts_with("/path/to/a-very-long-drive-name"));
         assert!(t.ends_with("SP Football Life 2027"));
         assert!(t.contains('…'));
     }

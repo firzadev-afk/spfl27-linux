@@ -667,7 +667,6 @@ pub fn find_settings_dat(game_dir: &Path) -> Option<PathBuf> {
         }
     }
     let home = std::env::var("HOME").unwrap_or_default();
-    collect_dat(&mut cands, &PathBuf::from(&home).join("Dokumen/SPGAME/Football Life"));
     collect_dat(&mut cands, &PathBuf::from(home).join("Documents/KONAMI"));
     cands.into_iter().find(|p| p.is_file())
 }
