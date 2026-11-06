@@ -1487,16 +1487,9 @@ impl App {
     /// never runs edge to edge on a wide screen. Below the breakpoint the page
     /// goes fluid instead of overflowing, which is what a Steam Deck gets.
     fn page_shell<'a>(&self, content: iced::Element<'a, Message>) -> iced::Element<'a, Message> {
-        // Centred and capped: `max_width` (not a fixed width) lets the page
-        // shrink on a small screen instead of overflowing it.
-        row![
-            Space::new().width(Length::Fill),
-            container(content)
-                .width(Length::Fill)
-                .max_width(tsize::PAGE),
-            Space::new().width(Length::Fill),
-        ]
-        .into()
+        // Use the whole available width so the layout follows the window on any
+        // screen size instead of being capped to one fixed centre column.
+        container(content).width(Length::Fill).into()
     }
 
     /// Sidebar: brand block, nav, theme toggle. The active page is tinted with

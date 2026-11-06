@@ -22,7 +22,7 @@ pub mod space {
     pub const HUGE: f32 = 40.0;
     /// Horizontal page margin.
     pub const GUTTER: f32 = 28.0;
-    /// Sidebar width. `SIDEBAR + 2*GUTTER + PAGE` must be <= 1280.
+    /// Sidebar width. Page content uses the remaining window width.
     pub const SIDEBAR: f32 = 208.0;
 }
 
@@ -44,10 +44,6 @@ pub mod text {
     pub const LH_RELAXED: f32 = 1.6;
     /// Max width for readable prose (~72 chars at BODY).
     pub const MEASURE: f32 = 680.0;
-    /// Max width for the whole page content. Combined with SIDEBAR and
-    /// GUTTER it must stay under 1280px so the app fits a Steam Deck screen
-    /// without the window scaling.
-    pub const PAGE: f32 = 960.0;
 }
 
 pub mod radius {
