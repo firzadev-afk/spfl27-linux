@@ -161,20 +161,21 @@ The script also reads the prefix from Lutris config files and scans
 
 ## 7. Where your saves live — back them up
 
-Your career and match progress lives in the **KONAMI** folder inside the Wine
+Your career and match progress lives under **Football Life** inside the Wine
 prefix, usually at:
 
 ```text
-~/Games/sp-football-life-2027/drive_c/users/<your-name>/Documents/KONAMI
+~/Games/sp-football-life-2027/drive_c/users/<your-name>/Documents/SPGAME/Football Life
 ```
 
-(The exact user folder name depends on the prefix. The Playtools app also
-looks in `~/Documents/KONAMI`.)
+(The exact user folder name depends on the prefix. For older saves, the
+Playtools app also checks the **KONAMI** folder: `Documents/KONAMI` and
+`~/Documents/KONAMI`.)
 
 **Warning: uninstalling the game deletes this folder.** Back it up before you
 uninstall, reinstall, or repair anything. The Playtools app can make
 timestamped backups under `~/spfl27-backups` and restore them (restoring
-overwrites, so it asks twice). You can also copy the KONAMI folder anywhere
+overwrites, so it asks twice). You can also copy the save folder anywhere
 safe yourself.
 
 ## 8. Troubleshooting

@@ -224,3 +224,22 @@ fn e2e_settings_command_points_to_game_tool() {
     assert!(cmd[1].ends_with(SETTINGS_EXE), "{cmd:?}");
     assert!(f.game.join(SETTINGS_EXE).is_file());
 }
+
+#[test]
+fn e2e_detects_spgame_football_life_save_path() {
+    let root = tmp("spgame-save");
+    let prefix = root.join("pfx");
+    let game = prefix
+        .join("drive_c")
+        .join("Program Files (x86)")
+        .join(GAME_FOLDER_NAME);
+    let save_dir = prefix.join("drive_c/users/deck/Documents/SPGAME/Football Life");
+    fs::create_dir_all(game.join("Data")).unwrap();
+    fs::create_dir_all(save_dir.join("2027/save")).unwrap();
+    fs::write(game.join("FL_2027.exe"), b"x").unwrap();
+    fs::write(save_dir.join("settings.dat"), vec![0u8; 64]).unwrap();
+
+    let found = find_settings_dat(&game).expect("SPGAME save must be detected");
+    assert_eq!(found, save_dir.join("settings.dat"));
+    assert_eq!(find_konami_dir(&game), Some(save_dir));
+}

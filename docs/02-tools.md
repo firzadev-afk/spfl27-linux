@@ -50,7 +50,8 @@ Built with Rust and iced. Pages:
 - **Settings** — the easiest and safest way to open the game's FL27 Settings
   tool, where you can change display, audio and controller settings.
 - **Saves** — one-click timestamped backups of the game's save folder
-  (KONAMI, inside its Windows-on-Linux installation) under `~/spfl27-backups`.
+  (`Documents/SPGAME/Football Life`, or `Documents/KONAMI` for older saves)
+  under `~/spfl27-backups`.
   Restoring overwrites, so it asks twice. Uninstalling the game deletes the
   save folder — back it up.
 - **Help** — the most common problems and their fixes. The log panel at the

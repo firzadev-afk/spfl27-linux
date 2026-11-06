@@ -658,11 +658,16 @@ pub fn find_settings_dat(game_dir: &Path) -> Option<PathBuf> {
     if let Some(p) = prefix_of(game_dir) {
         if let Ok(u) = fs::read_dir(p.join("drive_c/users")) {
             for ue in u.flatten() {
-                collect_dat(&mut cands, &ue.path().join("Documents/KONAMI"));
+                let documents = ue.path().join("Documents");
+                // The game's current save location is not under a KONAMI folder:
+                // it is usually "<Documents>/SPGAME/Football Life/settings.dat".
+                collect_dat(&mut cands, &documents.join("SPGAME/Football Life"));
+                collect_dat(&mut cands, &documents.join("KONAMI"));
             }
         }
     }
     let home = std::env::var("HOME").unwrap_or_default();
+    collect_dat(&mut cands, &PathBuf::from(&home).join("Dokumen/SPGAME/Football Life"));
     collect_dat(&mut cands, &PathBuf::from(home).join("Documents/KONAMI"));
     cands.into_iter().find(|p| p.is_file())
 }
@@ -687,9 +692,13 @@ fn collect_dat(out: &mut Vec<PathBuf>, root: &Path) {
 
 pub fn find_konami_dir(game_dir: &Path) -> Option<PathBuf> {
     let dat = find_settings_dat(game_dir)?;
-    dat.ancestors()
-        .find(|p| p.ends_with("KONAMI"))
-        .map(|p| p.to_path_buf())
+    dat.ancestors().find_map(|p| {
+        if p.file_name().is_some_and(|n| n == "KONAMI" || n == "Football Life") {
+            Some(p.to_path_buf())
+        } else {
+            None
+        }
+    })
 }
 
 pub struct Settings {
