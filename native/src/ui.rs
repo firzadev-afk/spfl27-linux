@@ -1672,13 +1672,6 @@ impl App {
             ("zap", "Game", st.game, "found", "not found"),
             ("layers", "Sider", st.sider, "running", "not installed"),
             (
-                "monitor",
-                "Aspect fix",
-                st.aspect,
-                "installed",
-                "not installed",
-            ),
-            (
                 "save",
                 "Save",
                 st.settings,
