@@ -32,6 +32,7 @@ fn build(root: &Path) -> Fake {
     fs::write(game.join("SiderAddons/sider.exe"), b"fake").unwrap();
     fs::write(game.join("SiderAddons/modules/aspectratio.lua"), b"-- fake").unwrap();
     fs::write(game.join(SWITCHER_EXE), b"fake").unwrap();
+    fs::write(game.join(SETTINGS_EXE), b"fake").unwrap();
     // bundled game switcher: GP + Controller + Classics
     for (idx, sm) in SWITCH_MAP.iter().enumerate() {
         let (sub, fname) = (sm.1, sm.3);
@@ -212,4 +213,14 @@ fn e2e_switcher_command_points_to_game_tool() {
     assert!(cmd[0].ends_with("wine"), "{cmd:?}");
     assert!(cmd[1].ends_with(SWITCHER_EXE), "{cmd:?}");
     assert!(f.game.join(SWITCHER_EXE).is_file());
+}
+
+#[test]
+fn e2e_settings_command_points_to_game_tool() {
+    let root = tmp("settings-cmd");
+    let f = build(&root);
+    let cmd = build_settings_cmd(&f.game);
+    assert!(cmd[0].ends_with("wine"), "{cmd:?}");
+    assert!(cmd[1].ends_with(SETTINGS_EXE), "{cmd:?}");
+    assert!(f.game.join(SETTINGS_EXE).is_file());
 }

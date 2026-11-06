@@ -33,6 +33,7 @@ pub const GAME_FOLDER_NAME: &str = "SP Football Life 2027";
 /// Game launchers in preference order (single source of truth for the exe names).
 pub const GAME_EXES: [&str; 2] = ["FL_2027.exe", "FL 2027 start.exe"];
 pub const SWITCHER_EXE: &str = "FL27 Switcher.exe";
+pub const SETTINGS_EXE: &str = "Settings.exe";
 
 static CONTROLLER_OPTS_REF: &[(&str, &str)] = &CONTROLLER_OPTS;
 static SCREEN_OPTS_REF: &[(&str, &str)] = &SCREEN_OPTS;
@@ -878,6 +879,29 @@ pub fn which(cmd: &str) -> Option<PathBuf> {
         }
     }
     None
+}
+
+/// Command to launch the game-shipped FL27 Settings tool.
+pub fn build_settings_cmd(game_dir: &Path) -> Vec<String> {
+    let wine = which("wine")
+        .map(|p| p.to_string_lossy().into_owned())
+        .unwrap_or_else(|| "wine".into());
+    vec![wine, game_dir.join(SETTINGS_EXE).to_string_lossy().into_owned()]
+}
+
+/// Launch the game-shipped FL27 Settings tool (the supported beginner path).
+pub fn launch_settings(game_dir: &Path) -> Res<()> {
+    let exe = game_dir.join(SETTINGS_EXE);
+    if !exe.is_file() {
+        return Err(SpflError::Msg(format!(
+            "{SETTINGS_EXE} is not installed — reinstall the full game from SmokePatch."
+        )));
+    }
+    let wine = which("wine").ok_or_else(|| SpflError::Msg("wine not found".into()))?;
+    let w = wine.to_string_lossy().into_owned();
+    let exe_s = exe.to_string_lossy().into_owned();
+    spawn_bg(&[&w, &exe_s], game_dir);
+    Ok(())
 }
 
 /// Command to launch the game-shipped FL27 Switcher tool.

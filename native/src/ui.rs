@@ -88,8 +88,7 @@ pub fn page_intro(page: Page) -> (&'static str, &'static str) {
         ),
         Page::Settings => (
             "Settings — display & controller",
-            "The same options the game's own Settings tool offers: screen mode, V-Sync \
-             and controller type. Saved into the game's settings file with an automatic backup first.",
+            "Use the game's own Settings tool for display, audio and controller settings. It is safer than editing files directly.",
         ),
         Page::Saves => (
             "Saves — protect your progress",
@@ -258,6 +257,8 @@ pub enum Message {
     SwitcherApply,
     OpenSwitcher,
     ToggleSwitcherAdvanced,
+    OpenSettings,
+    ToggleSettingsAdvanced,
     // settings
     SettingPick(&'static str, String),
     SettingsSave,
@@ -314,6 +315,7 @@ pub struct App {
     restore_path: String,
     restore_armed: bool,
     switcher_advanced_open: bool,
+    settings_advanced_open: bool,
 }
 
 impl App {
@@ -360,6 +362,7 @@ impl App {
             restore_path: String::new(),
             restore_armed: false,
             switcher_advanced_open: false,
+            settings_advanced_open: false,
         };
         app.setup = app.game_dir.is_none();
         app.candidates = initial_candidates(app.game_dir.as_deref());
@@ -899,6 +902,43 @@ impl App {
             }
             Message::ToggleSwitcherAdvanced => {
                 self.switcher_advanced_open = !self.switcher_advanced_open;
+            }
+            Message::OpenSettings => {
+                let Some(g) = self.game_dir.clone() else {
+                    self.toast(ToastKind::Error, "Select the game folder first (Home page).");
+                    return Task::none();
+                };
+                let settings = g.join(SETTINGS_EXE);
+                if !settings.is_file() {
+                    self.push_log(format!("{SETTINGS_EXE} is not installed."));
+                    self.toast(
+                        ToastKind::Error,
+                        "FL27 Settings is not installed. Reinstall the full game.",
+                    );
+                    return Task::none();
+                }
+                return self.spawn(move |tx| {
+                    match launch_settings(&g) {
+                        Ok(()) => {
+                            let _ = tx.unbounded_send(Message::Log("Opened FL27 Settings.".into()));
+                            let _ = tx.unbounded_send(Message::ShowToast(
+                                ToastKind::Success,
+                                "FL27 Settings opened. Change settings, then save and close.".into(),
+                            ));
+                        }
+                        Err(e) => {
+                            let _ = tx.unbounded_send(Message::Log(format!("Could not open FL27 Settings: {e}")));
+                            let _ = tx.unbounded_send(Message::ShowToast(
+                                ToastKind::Error,
+                                format!("Could not open FL27 Settings: {e}"),
+                            ));
+                        }
+                    }
+                    let _ = tx.unbounded_send(Message::WorkerDone("open-settings".into()));
+                });
+            }
+            Message::ToggleSettingsAdvanced => {
+                self.settings_advanced_open = !self.settings_advanced_open;
             }
             Message::SwitcherPick(label, choice) => {
                 if let Some(slot) = self.sw_cur.iter_mut().find(|(l, _)| *l == label) {
@@ -2059,75 +2099,140 @@ impl App {
         col.into()
     }
 
-    fn view_settings(&self, _dark: bool) -> iced::Element<'_, Message> {
-        let dark = self.mode == Mode::Dark;
-        let mut col: Column<Message> = column![self.intro_card(Page::Settings, dark),]
-            .spacing(space::LG)
-            .padding(space::GUTTER);
+    fn view_settings(&self, dark: bool) -> iced::Element<'_, Message> {
+        let game_dir = self.game_dir.as_ref();
+        let settings = game_dir.map(|g| g.join(SETTINGS_EXE));
+        let installed = settings.as_ref().is_some_and(|p| p.is_file());
+        let wine = which("wine").is_some();
+        let status = if !installed {
+            "FL27 Settings is not installed. Reinstall the full game from SmokePatch."
+        } else if wine {
+            "FL27 Settings is installed — change the settings you need, then save and close."
+        } else {
+            "FL27 Settings is installed, but system Wine is missing. On Steam Deck, start SP Football Life 2027 from Lutris and choose FL27 Settings from the launch options."
+        };
 
-        col = col.push(path_chip(
-            format!("File: {}", short_path(&self.dat_path, 84)),
-            dark,
-        ));
-
-        let combos = [
-            (
-                "controller",
-                "Controller",
-                "Steam and Xbox pads: XInput. PlayStation pads: DirectInput.",
-                vec!["DirectInput".to_string(), "XInput".to_string()],
-                self.set_ctrl.clone(),
-            ),
-            (
-                "screen",
-                "Screen mode",
-                "Full Screen for matches; Windowed if you multitask.",
-                vec!["Windowed".to_string(), "Full Screen".to_string()],
-                self.set_screen.clone(),
-            ),
-            (
-                "vsync",
-                "V-Sync",
-                "Enable1 caps 60 fps and reduces heat (recommended).",
-                vec![
-                    "Disabled".to_string(),
-                    "Enable1".to_string(),
-                    "Enable2".to_string(),
-                ],
-                self.set_vsync.clone(),
-            ),
-        ];
-        let mut card_col: Column<Message> = column![].spacing(space::MD);
-        for (kind, label, caption, opts, cur) in combos {
-            let sel = if cur.is_empty() { None } else { Some(cur) };
-            card_col = card_col.push(
+        let mut col: Column<Message> = column![
+            self.intro_card(Page::Settings, dark),
+            container(
                 column![
-                    text(label).size(tsize::BODY_LG),
-                    sub(caption.to_string(), dark),
-                    pick_list(opts, sel, move |c: String| Message::SettingPick(kind, c))
-                        .placeholder("—")
-                        .width(Length::Fill),
+                    row![
+                        icon("settings", isize::MD),
+                        text("The safest way to change game settings").size(tsize::H3),
+                    ]
+                    .spacing(space::MD)
+                    .align_y(Alignment::Center),
+                    sub(status, dark),
+                    button(
+                        row![
+                            icon("settings", isize::MD),
+                            text("Open FL27 Settings").size(tsize::BODY_LG),
+                        ]
+                        .spacing(space::SM)
+                        .align_y(Alignment::Center),
+                    )
+                    .on_press(Message::OpenSettings)
+                    .style(theme::btn_primary(dark)),
+                    sub(
+                        "Choose Display, Keyboard, Controller, Audio or Online, save the changes, then close FL27 Settings. Restart the game to see the changes.",
+                        dark,
+                    ),
                 ]
-                .spacing(space::XS),
+                .spacing(space::MD),
+            )
+            .padding(space::LG)
+            .style(theme::card_style(dark))
+            .width(Length::Fill),
+        ]
+        .spacing(space::LG)
+        .padding(space::GUTTER);
+
+        if self.settings_advanced_open {
+            let mut card_col: Column<Message> = column![
+                row![
+                    text("Advanced: edit the game settings file directly").size(tsize::H3),
+                    Space::new().width(Length::Fill),
+                    button(text("Close").size(tsize::SMALL))
+                        .on_press(Message::ToggleSettingsAdvanced)
+                        .style(theme::btn_ghost(dark)),
+                ]
+                .align_y(Alignment::Center),
+                path_chip(
+                    format!("File: {}", short_path(&self.dat_path, 84)),
+                    dark,
+                ),
+                sub(
+                    "Only use this if FL27 Settings cannot fix the problem. A backup is made automatically before the first change.",
+                    dark,
+                ),
+            ]
+            .spacing(space::MD);
+
+            let combos = [
+                (
+                    "controller",
+                    "Controller",
+                    "Steam and Xbox pads: XInput. PlayStation pads: DirectInput.",
+                    vec!["DirectInput".to_string(), "XInput".to_string()],
+                    self.set_ctrl.clone(),
+                ),
+                (
+                    "screen",
+                    "Screen mode",
+                    "Full Screen for matches; Windowed if you multitask.",
+                    vec!["Windowed".to_string(), "Full Screen".to_string()],
+                    self.set_screen.clone(),
+                ),
+                (
+                    "vsync",
+                    "V-Sync",
+                    "Enable1 caps 60 fps and reduces heat (recommended).",
+                    vec![
+                        "Disabled".to_string(),
+                        "Enable1".to_string(),
+                        "Enable2".to_string(),
+                    ],
+                    self.set_vsync.clone(),
+                ),
+            ];
+            for (kind, label, caption, opts, cur) in combos {
+                let sel = if cur.is_empty() { None } else { Some(cur) };
+                card_col = card_col.push(
+                    column![
+                        text(label).size(tsize::BODY_LG),
+                        sub(caption.to_string(), dark),
+                        pick_list(opts, sel, move |c: String| Message::SettingPick(kind, c))
+                            .placeholder("—")
+                            .width(Length::Fill),
+                    ]
+                    .spacing(space::XS),
+                );
+            }
+            card_col = card_col.push(
+                button(
+                    row![
+                        icon("save", isize::SM),
+                        text("Save settings").size(tsize::BODY),
+                    ]
+                    .spacing(space::SM),
+                )
+                .on_press(Message::SettingsSave)
+                .style(theme::btn_primary(dark)),
+            );
+            col = col.push(
+                container(card_col)
+                    .padding(space::LG)
+                    .style(theme::card_style(dark))
+                    .width(Length::Fill),
+            );
+        } else {
+            col = col.push(
+                button(text("Advanced: edit the game settings file directly").size(tsize::SMALL))
+                    .on_press(Message::ToggleSettingsAdvanced)
+                    .style(theme::btn_ghost(dark)),
             );
         }
-        card_col = card_col.push(
-            button(
-                row![
-                    icon("save", isize::SM),
-                    text("Save settings").size(tsize::BODY)
-                ]
-                .spacing(space::SM),
-            )
-            .on_press(Message::SettingsSave)
-            .style(theme::btn_primary(dark)),
-        );
-        col = col.push(
-            container(card_col)
-                .padding(space::LG)
-                .style(theme::card_style(dark))
-                .width(Length::Fill),
-        );
+
         col.into()
     }
 

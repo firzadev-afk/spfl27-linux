@@ -47,8 +47,8 @@ Built with Rust and iced. Pages:
   required). On Steam Deck, Lutris comes via Flatpak.
 - **Switcher** — the easiest and safest way to open the game's FL27
   Switcher, where you can change gameplay, controller icons and team modes.
-- **Settings** — same options as Settings.exe. First change makes an automatic
-  backup of the settings file (`settings.dat`).
+- **Settings** — the easiest and safest way to open the game's FL27 Settings
+  tool, where you can change display, audio and controller settings.
 - **Saves** — one-click timestamped backups of the game's save folder
   (KONAMI, inside its Windows-on-Linux installation) under `~/spfl27-backups`.
   Restoring overwrites, so it asks twice. Uninstalling the game deletes the
