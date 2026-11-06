@@ -18,7 +18,7 @@ Lives next to the project so future polish passes can stay consistent.
 - motion: 2 (functional only)
 - variance: 3
 
-## Riwayat kritik
+## Critique history
 
 | Tanggal | Permukaan | Skor /40 | P0 | P1 |
 |---|---|---|---|---|
