@@ -692,7 +692,9 @@ fn collect_dat(out: &mut Vec<PathBuf>, root: &Path) {
 pub fn find_konami_dir(game_dir: &Path) -> Option<PathBuf> {
     let dat = find_settings_dat(game_dir)?;
     dat.ancestors().find_map(|p| {
-        if p.file_name().is_some_and(|n| n == "KONAMI" || n == "Football Life") {
+        if p.file_name()
+            .is_some_and(|n| n == "KONAMI" || n == "Football Life")
+        {
             Some(p.to_path_buf())
         } else {
             None
@@ -894,7 +896,10 @@ pub fn build_settings_cmd(game_dir: &Path) -> Vec<String> {
     let wine = which("wine")
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_else(|| "wine".into());
-    vec![wine, game_dir.join(SETTINGS_EXE).to_string_lossy().into_owned()]
+    vec![
+        wine,
+        game_dir.join(SETTINGS_EXE).to_string_lossy().into_owned(),
+    ]
 }
 
 /// Launch the game-shipped FL27 Settings tool (the supported beginner path).
@@ -917,7 +922,10 @@ pub fn build_switcher_cmd(game_dir: &Path) -> Vec<String> {
     let wine = which("wine")
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_else(|| "wine".into());
-    vec![wine, game_dir.join(SWITCHER_EXE).to_string_lossy().into_owned()]
+    vec![
+        wine,
+        game_dir.join(SWITCHER_EXE).to_string_lossy().into_owned(),
+    ]
 }
 
 /// Launch the game-shipped FL27 Switcher (the supported beginner path).
@@ -944,26 +952,114 @@ pub fn build_launch_cmd(game_dir: &Path) -> Vec<String> {
 }
 
 /// Mirrors FL_2027.bat: start sider first, wait for sider-app.log, then the game.
+/// Unlike the bat file, this function stays alive while the game runs and tears
+/// the Wine prefix down when the game window is closed: FL_2027.exe does not
+/// always exit after WM_DESTROY, so Sider's own exit is used as the signal.
 pub fn launch_game(game_dir: &Path) -> Res<()> {
     let wine = which("wine").ok_or_else(|| SpflError::Msg("wine not found".into()))?;
     let sider = game_dir.join("SiderAddons/sider.exe");
     let applog = game_dir.join("SiderAddons/sider-app.log");
     let _ = fs::remove_file(&applog);
+
+    let mut sider_child: Option<std::process::Child> = None;
+    let mut sider_ok = false;
     if sider.is_file() {
         let w = wine.to_string_lossy().into_owned();
         let sd = sider.to_string_lossy().into_owned();
-        spawn_bg(&[&w, &sd], game_dir);
-        for _ in 0..30 {
-            if applog.exists() {
-                break;
+        match Command::new(&w)
+            .arg(&sd)
+            .current_dir(game_dir)
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+        {
+            Ok(child) => {
+                sider_child = Some(child);
+                for _ in 0..30 {
+                    if applog.exists() {
+                        break;
+                    }
+                    std::thread::sleep(std::time::Duration::from_secs(1));
+                }
+                std::thread::sleep(std::time::Duration::from_secs(2));
+                sider_ok = applog.exists();
             }
-            std::thread::sleep(std::time::Duration::from_secs(1));
+            Err(_) => {}
         }
-        std::thread::sleep(std::time::Duration::from_secs(2));
     }
+
     let cmd = build_launch_cmd(game_dir);
-    let refs: Vec<&str> = cmd.iter().map(|s| s.as_str()).collect();
-    spawn_bg(&refs, game_dir);
+    let mut game_child = Command::new(&cmd[0])
+        .args(&cmd[1..])
+        .current_dir(game_dir)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .spawn()?;
+
+    // Poll both processes. Sider exits when the game window is destroyed; the
+    // game process itself may stay alive in RAM, so give it a short grace
+    // period and then force the prefix down.
+    let grace = std::time::Duration::from_secs(8);
+    let poll = std::time::Duration::from_millis(500);
+    let mut sider_exited_at: Option<std::time::Instant> = None;
+    loop {
+        match game_child.try_wait() {
+            Ok(Some(_)) => break,
+            Ok(None) => {}
+            Err(_) => break,
+        }
+        if sider_ok {
+            if let Some(child) = sider_child.as_mut() {
+                match child.try_wait() {
+                    Ok(Some(_)) => {
+                        if sider_exited_at.is_none() {
+                            sider_exited_at = Some(std::time::Instant::now());
+                        }
+                    }
+                    Ok(None) => {}
+                    Err(_) => {}
+                }
+            }
+        }
+        if let Some(started) = sider_exited_at {
+            if started.elapsed() >= grace {
+                let _ = game_child.kill();
+                let _ = game_child.wait();
+                if let Some(child) = sider_child.as_mut() {
+                    let _ = child.kill();
+                    let _ = child.wait();
+                }
+                let wineserver = which("wineserver").unwrap_or_else(|| PathBuf::from("wineserver"));
+                let _ = Command::new(wineserver)
+                    .arg("-k")
+                    .env(
+                        "WINEPREFIX",
+                        game_dir
+                            .ancestors()
+                            .find(|p| p.join("drive_c").is_dir())
+                            .unwrap_or(game_dir),
+                    )
+                    .stdout(Stdio::null())
+                    .stderr(Stdio::null())
+                    .status();
+                return Ok(());
+            }
+        }
+        std::thread::sleep(poll);
+    }
+
+    if let Some(child) = sider_child.as_mut() {
+        let _ = child.kill();
+        let _ = child.wait();
+    }
+    let wineserver = which("wineserver").unwrap_or_else(|| PathBuf::from("wineserver"));
+    let prefix = prefix_of(game_dir).unwrap_or_else(|| game_dir.to_path_buf());
+    let _ = Command::new(wineserver)
+        .arg("-k")
+        .env("WINEPREFIX", prefix)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status();
     Ok(())
 }
 

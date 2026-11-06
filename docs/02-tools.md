@@ -66,6 +66,10 @@ cd native && cargo build --release
 
 ## Stop a stuck game
 
+The Playtools app's PLAY button also waits for the game to close and cleans up
+the same leftover processes automatically, so a stuck game is rare when you
+start it from Playtools.
+
 The game does not exit when its window is closed: Sider exits, but
 `FL_2027.exe` keeps running in the background. The desktop launcher waits a
 few seconds after the window is gone, then force-closes the whole prefix. If
