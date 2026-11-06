@@ -1,19 +1,20 @@
 //! Modern native UI (iced 0.14): sidebar nav, setup wizard, light/dark themes,
 //! Lucide SVG icons. All strings in English.
 
+use crate::theme::{self, icon as isize, space, text as tsize, Mode};
+use iced::keyboard::Key;
+use iced::widget::{
+    button, column, container, pick_list, progress_bar, row, rule, scrollable, stack, svg, text,
+    text_input, Column, Row, Space,
+};
+use iced::{Alignment, Color, Length, Task};
 use spfl27::core::*;
 use spfl27::deps;
-use crate::theme::{self, icon as isize, space, text as tsize, Mode};
-use iced::widget::{
-    Column, Row, Space, button, column, container, pick_list, progress_bar, row, rule,
-    scrollable, stack, svg, text, text_input,
-};
-use iced::keyboard::Key;
-use iced::{Alignment, Color, Length, Task};
 
 // ── Lucide icons (ISC, bundled) ──────────────────────────────────────────
 fn icon(name: &str, size: f32) -> iced::Element<'static, Message> {
-    let bytes: &'static [u8] = match name {        "play" => include_bytes!("../assets/icons/play.svg"),
+    let bytes: &'static [u8] = match name {
+        "play" => include_bytes!("../assets/icons/play.svg"),
         "settings" => include_bytes!("../assets/icons/settings.svg"),
         "gamepad-2" => include_bytes!("../assets/icons/gamepad-2.svg"),
         "save" => include_bytes!("../assets/icons/save.svg"),
@@ -51,14 +52,16 @@ fn icon(name: &str, size: f32) -> iced::Element<'static, Message> {
         "spfl-logo" => include_bytes!("../assets/icons/spfl-logo.svg"),
         _ => include_bytes!("../assets/icons/info.svg"),
     };
-    svg(svg::Handle::from_memory(bytes)).width(size).height(size).into()
+    svg(svg::Handle::from_memory(bytes))
+        .width(size)
+        .height(size)
+        .into()
 }
 
 use std::path::PathBuf;
 
 /// Product name shown in the sidebar, window title and Help.
 pub const BRAND: &str = "SPFL27 Playtools";
-
 
 /// One guide per page: title + 2-3 plain sentences (what / what to do / where).
 /// Every page MUST have an entry — enforced by `ui_tests::all_pages_have_intros`.
@@ -81,8 +84,7 @@ pub fn page_intro(page: Page) -> (&'static str, &'static str) {
         ),
         Page::Switcher => (
             "Switcher — change how it plays",
-            "Pick different gameplay, button-icon and legend packs. Source files ship \
-             with the game itself; your picks are copied into its data folder.",
+            "Use the game's own Switcher for gameplay, button icons and team modes. The default options are safe for new players.",
         ),
         Page::Settings => (
             "Settings — display & controller",
@@ -254,6 +256,8 @@ pub enum Message {
     // switcher
     SwitcherPick(&'static str, String),
     SwitcherApply,
+    OpenSwitcher,
+    ToggleSwitcherAdvanced,
     // settings
     SettingPick(&'static str, String),
     SettingsSave,
@@ -309,6 +313,7 @@ pub struct App {
     backups: Vec<String>,
     restore_path: String,
     restore_armed: bool,
+    switcher_advanced_open: bool,
 }
 
 impl App {
@@ -354,6 +359,7 @@ impl App {
             backups: Vec::new(),
             restore_path: String::new(),
             restore_armed: false,
+            switcher_advanced_open: false,
         };
         app.setup = app.game_dir.is_none();
         app.candidates = initial_candidates(app.game_dir.as_deref());
@@ -417,7 +423,9 @@ impl App {
     fn refresh_settings(&mut self) {
         match self.game_dir.as_ref().and_then(|g| find_settings_dat(g)) {
             None => {
-                self.dat_path = "the game settings file not found yet — launch the game once to create it.".into();
+                self.dat_path =
+                    "the game settings file not found yet — launch the game once to create it."
+                        .into();
             }
             Some(d) => {
                 self.dat_path = d.display().to_string();
@@ -574,7 +582,10 @@ impl App {
                     let raw = self.setup_exe.trim().to_string();
                     self.push_log(format!("Installer set: {raw}"));
                     if std::path::Path::new(&raw).is_file() {
-                        self.toast(ToastKind::Success, "Installer path set — now press Open Lutris.");
+                        self.toast(
+                            ToastKind::Success,
+                            "Installer path set — now press Open Lutris.",
+                        );
                     } else {
                         self.toast(ToastKind::Error, "That file was not found. Check the path.");
                     }
@@ -595,7 +606,10 @@ impl App {
                 Some(p) => {
                     self.update_file = p.to_string_lossy().into_owned();
                     self.push_log(format!("Update file set: {}", self.update_file));
-                    self.toast(ToastKind::Info, "Update file selected — press Run update to install it.");
+                    self.toast(
+                        ToastKind::Info,
+                        "Update file selected — press Run update to install it.",
+                    );
                 }
             },
             Message::PickCandidate(p) => {
@@ -625,9 +639,7 @@ impl App {
                     );
                 } else if self.candidates.len() == 1 && self.game_dir.is_none() {
                     let only = self.candidates[0].to_string_lossy().into_owned();
-                    self.push_log(
-                        "Search finished: 1 game found, selected automatically.".into(),
-                    );
+                    self.push_log("Search finished: 1 game found, selected automatically.".into());
                     return self.apply_game_path(&only);
                 } else {
                     self.push_log(format!(
@@ -638,7 +650,9 @@ impl App {
             }
             Message::SetupNext => {
                 if self.setup_step == 1 && self.game_dir.is_none() {
-                    self.push_log("Pick your game folder first (or install the game, then come back).".into());
+                    self.push_log(
+                        "Pick your game folder first (or install the game, then come back).".into(),
+                    );
                     return Task::none();
                 }
                 if self.setup_step < 3 {
@@ -655,7 +669,7 @@ impl App {
                     self.setup_step -= 1;
                 }
             }
-            
+
             Message::SetupExeChanged(s) => self.setup_exe = s,
             // Enter in the installer path field: remember it, then open Lutris.
             Message::ApplySetupExe => {
@@ -665,10 +679,7 @@ impl App {
                     return Task::none();
                 }
                 if !std::path::Path::new(&raw).is_file() {
-                    self.toast(
-                        ToastKind::Error,
-                        "That file was not found. Check the path.",
-                    );
+                    self.toast(ToastKind::Error, "That file was not found. Check the path.");
                     return Task::none();
                 }
                 self.push_log(format!("Installer path set: {raw}"));
@@ -681,11 +692,16 @@ impl App {
                 match which("lutris") {
                     Some(p) => {
                         let _ = std::process::Command::new(p).spawn();
-                        self.push_log("Lutris opened: + → Install from a local file → paste the path.".into());
+                        self.push_log(
+                            "Lutris opened: + → Install from a local file → paste the path.".into(),
+                        );
                     }
                     None => {
                         self.push_log("Lutris is not installed — see the System page.".into());
-                        self.toast(ToastKind::Error, "Lutris is not installed — see the System page.");
+                        self.toast(
+                            ToastKind::Error,
+                            "Lutris is not installed — see the System page.",
+                        );
                     }
                 }
             }
@@ -699,7 +715,10 @@ impl App {
             }
             Message::UpdateFileChanged(s) => self.update_file = s,
             Message::RunUpdate => {
-                let (Some(g), Some(pfx)) = (self.game_dir.clone(), self.game_dir.as_ref().and_then(|x| prefix_of(x))) else {
+                let (Some(g), Some(pfx)) = (
+                    self.game_dir.clone(),
+                    self.game_dir.as_ref().and_then(|x| prefix_of(x)),
+                ) else {
                     self.push_log("Select the game folder first.".into());
                     return Task::none();
                 };
@@ -710,7 +729,10 @@ impl App {
                 }
                 let Some(wine) = which("wine") else {
                     self.push_log("Wine is missing — install it on the System page.".into());
-                    self.toast(ToastKind::Error, "Wine is missing — install it on the System page.");
+                    self.toast(
+                        ToastKind::Error,
+                        "Wine is missing — install it on the System page.",
+                    );
                     return Task::none();
                 };
                 let wine = wine.to_string_lossy().into_owned();
@@ -734,7 +756,11 @@ impl App {
                                 "Update reported an error. Open Activity for details."
                             };
                             let _ = tx.unbounded_send(Message::ShowToast(
-                                if ok { ToastKind::Success } else { ToastKind::Error },
+                                if ok {
+                                    ToastKind::Success
+                                } else {
+                                    ToastKind::Error
+                                },
                                 msg.to_string(),
                             ));
                         }
@@ -768,7 +794,9 @@ impl App {
                 }
             }
             Message::ClearCache => match clear_lutris_cache() {
-                Ok(n) => self.push_log(format!("Lutris cache cleared ({n} items). Reopen Lutris to re-download.")),
+                Ok(n) => self.push_log(format!(
+                    "Lutris cache cleared ({n} items). Reopen Lutris to re-download."
+                )),
                 Err(e) => self.push_log(format!("Failed: {e}")),
             },
             Message::DepsRefresh => {
@@ -776,15 +804,18 @@ impl App {
                 self.refresh_status();
             }
             Message::DepsInstall => {
-                let skip: &[&str] = if self.deck { &["wine", "gamemode"] } else { &[] }; // Deck: Lutris runners cover wine
+                let skip: &[&str] = if self.deck {
+                    &["wine", "gamemode"]
+                } else {
+                    &[]
+                }; // Deck: Lutris runners cover wine
                 let missing: Vec<&str> = self
                     .deps
                     .iter()
                     .filter(|d| !d.ok && !skip.contains(&d.key))
                     .map(|d| d.key)
                     .collect();
-                let already: Vec<&str> =
-                    self.deps.iter().filter(|d| d.ok).map(|d| d.key).collect();
+                let already: Vec<&str> = self.deps.iter().filter(|d| d.ok).map(|d| d.key).collect();
                 let cmds = deps::install_plan(&missing, &self.pm, self.deck);
                 if cmds.is_empty() {
                     self.push_log("Everything needed is already installed.".into());
@@ -794,17 +825,27 @@ impl App {
                 self.push_log(format!(
                     "Installing: {} | skipping (present): {}",
                     missing.join(", "),
-                    if already.is_empty() { "-".into() } else { already.join(", ") }
+                    if already.is_empty() {
+                        "-".into()
+                    } else {
+                        already.join(", ")
+                    }
                 ));
                 return self.spawn(move |tx| {
-                    let send = |m: String| { tx.unbounded_send(Message::Log(m)).ok(); };
+                    let send = |m: String| {
+                        tx.unbounded_send(Message::Log(m)).ok();
+                    };
                     let mut send = send;
                     let _ = deps::run_install(&cmds, &mut send);
                     let _ = tx.unbounded_send(Message::WorkerDone("install".into()));
                 });
             }
             Message::CopyInstallCmd => {
-                let skip: &[&str] = if self.deck { &["wine", "gamemode"] } else { &[] }; // Deck: Lutris runners cover wine
+                let skip: &[&str] = if self.deck {
+                    &["wine", "gamemode"]
+                } else {
+                    &[]
+                }; // Deck: Lutris runners cover wine
                 let missing: Vec<&str> = self
                     .deps
                     .iter()
@@ -822,16 +863,57 @@ impl App {
                 }
                 self.push_log(format!("Copy this into a terminal:\n{txt}"));
             }
+            Message::OpenSwitcher => {
+                let Some(g) = self.game_dir.clone() else {
+                    self.toast(ToastKind::Error, "Select the game folder first (Home page).");
+                    return Task::none();
+                };
+                let switcher = g.join(SWITCHER_EXE);
+                if !switcher.is_file() {
+                    self.push_log(format!("{SWITCHER_EXE} is not installed."));
+                    self.toast(
+                        ToastKind::Error,
+                        "FL27 Switcher is not installed. Reinstall the full game.",
+                    );
+                    return Task::none();
+                }
+                return self.spawn(move |tx| {
+                    match launch_switcher(&g) {
+                        Ok(()) => {
+                            let _ = tx.unbounded_send(Message::Log("Opened FL27 Switcher.".into()));
+                            let _ = tx.unbounded_send(Message::ShowToast(
+                                ToastKind::Success,
+                                "FL27 Switcher opened. Change settings, then press Apply and Close.".into(),
+                            ));
+                        }
+                        Err(e) => {
+                            let _ = tx.unbounded_send(Message::Log(format!("Could not open FL27 Switcher: {e}")));
+                            let _ = tx.unbounded_send(Message::ShowToast(
+                                ToastKind::Error,
+                                format!("Could not open FL27 Switcher: {e}"),
+                            ));
+                        }
+                    }
+                    let _ = tx.unbounded_send(Message::WorkerDone("open-switcher".into()));
+                });
+            }
+            Message::ToggleSwitcherAdvanced => {
+                self.switcher_advanced_open = !self.switcher_advanced_open;
+            }
             Message::SwitcherPick(label, choice) => {
                 if let Some(slot) = self.sw_cur.iter_mut().find(|(l, _)| *l == label) {
                     slot.1 = choice;
                 }
             }
             Message::SwitcherApply => {
-                let (Some(g), Some(src)) =
-                    (self.game_dir.clone(), self.game_dir.as_ref().and_then(|x| cpk_source(x)))
-                else {
-                    self.push_log("The game's 'switcher' folder was not found — install the full game.".into());
+                let (Some(g), Some(src)) = (
+                    self.game_dir.clone(),
+                    self.game_dir.as_ref().and_then(|x| cpk_source(x)),
+                ) else {
+                    self.push_log(
+                        "The game's 'switcher' folder was not found — install the full game."
+                            .into(),
+                    );
                     return Task::none();
                 };
                 let mut applied = false;
@@ -865,8 +947,11 @@ impl App {
                 match find_settings_dat(&g) {
                     None => self.push_log("Game settings file not found.".into()),
                     Some(d) => {
-                        let (c, s, v) =
-                            (self.set_ctrl.clone(), self.set_screen.clone(), self.set_vsync.clone());
+                        let (c, s, v) = (
+                            self.set_ctrl.clone(),
+                            self.set_screen.clone(),
+                            self.set_vsync.clone(),
+                        );
                         match write_settings(&d, &c, &s, &v) {
                             Ok(m) => self.push_log(m),
                             Err(e) => self.push_log(format!("Failed: {e}")),
@@ -918,8 +1003,9 @@ impl App {
                     );
                     return Task::none();
                 }
-                let looks_ok =
-                    std::fs::read_dir(&src).map(|mut it| it.any(|_| true)).unwrap_or(false);
+                let looks_ok = std::fs::read_dir(&src)
+                    .map(|mut it| it.any(|_| true))
+                    .unwrap_or(false);
                 if !looks_ok {
                     self.push_log("Backup folder is empty — cancelled.".into());
                     self.toast(ToastKind::Error, "That backup folder is empty");
@@ -953,8 +1039,13 @@ impl App {
             }
             Message::LaunchGame => {
                 let Some(g) = self.game_dir.clone() else {
-                    self.push_log("Select the game folder first (Home page, Change button).".into());
-                    self.toast(ToastKind::Error, "Select the game folder first (Home page).");
+                    self.push_log(
+                        "Select the game folder first (Home page, Change button).".into(),
+                    );
+                    self.toast(
+                        ToastKind::Error,
+                        "Select the game folder first (Home page).",
+                    );
                     return Task::none();
                 };
                 let st = game_status(Some(&g));
@@ -969,7 +1060,10 @@ impl App {
                 if !st.wine {
                     if st.lutris {
                         self.push_log("No system wine — launching through Lutris instead.".into());
-                        self.toast(ToastKind::Info, "No system Wine — launching through Lutris.");
+                        self.toast(
+                            ToastKind::Info,
+                            "No system Wine — launching through Lutris.",
+                        );
                         return self.spawn(move |tx| {
                             match launch_via_lutris() {
                                 Ok(()) => {
@@ -993,7 +1087,10 @@ impl App {
                         });
                     }
                     self.push_log("Wine is missing — install it on the System page.".into());
-                    self.toast(ToastKind::Error, "Wine is missing — install it on the System page.");
+                    self.toast(
+                        ToastKind::Error,
+                        "Wine is missing — install it on the System page.",
+                    );
                     return Task::none();
                 }
                 self.push_log(format!("Launching: {}", g.display()));
@@ -1055,7 +1152,9 @@ impl App {
             }
             Message::KeyPressed(ev) => {
                 if let iced::Event::Keyboard(iced::keyboard::Event::KeyPressed {
-                    key, modifiers, ..
+                    key,
+                    modifiers,
+                    ..
                 }) = ev
                 {
                     use iced::keyboard::key::Named;
@@ -1079,10 +1178,7 @@ impl App {
             Message::OpenDocs => match spfl27::docs_dir() {
                 Some(d) => {
                     let shown = d.display().to_string();
-                    match std::process::Command::new("xdg-open")
-                        .arg(&d)
-                        .spawn()
-                    {
+                    match std::process::Command::new("xdg-open").arg(&d).spawn() {
                         Ok(_) => self.push_log(format!("Opened guides: {shown}")),
                         Err(e) => {
                             self.push_log(format!("Could not open guides: {e}"));
@@ -1097,7 +1193,10 @@ impl App {
             },
             Message::RevealPath(p) => {
                 let dir = p.parent().map(|d| d.to_path_buf()).unwrap_or(p);
-                match which("xdg-open").or_else(|| which("gio")).or_else(|| which("nautilus")) {
+                match which("xdg-open")
+                    .or_else(|| which("gio"))
+                    .or_else(|| which("nautilus"))
+                {
                     Some(opener) => {
                         let shown = opener.display().to_string();
                         match std::process::Command::new(&opener).arg(&dir).spawn() {
@@ -1144,7 +1243,10 @@ fn copy_text(s: &str) -> bool {
 // ── text + chip helpers (all sizes from theme::text / theme::space) ───────
 /// Page title.
 fn h1(s: impl Into<String>) -> iced::Element<'static, Message> {
-    text(s.into()).size(tsize::H2).line_height(tsize::LH_TIGHT).into()
+    text(s.into())
+        .size(tsize::H2)
+        .line_height(tsize::LH_TIGHT)
+        .into()
 }
 
 /// Secondary text: muted, comfortable leading, themed colour.
@@ -1194,7 +1296,14 @@ fn short_path(p: &str, max: usize) -> String {
     }
     let keep = (max - 1) / 2;
     let head: String = p.chars().take(keep).collect();
-    let tail: String = p.chars().rev().take(keep).collect::<String>().chars().rev().collect();
+    let tail: String = p
+        .chars()
+        .rev()
+        .take(keep)
+        .collect::<String>()
+        .chars()
+        .rev()
+        .collect();
     format!("{head}…{tail}")
 }
 
@@ -1252,11 +1361,7 @@ fn dir_check_list(dir: &std::path::Path, skip: usize, dark: bool) -> Column<'sta
 }
 
 /// One search-result row: status icon + path + Use/In-use button.
-fn candidate_row(
-    c: PathBuf,
-    in_use: bool,
-    dark: bool,
-) -> iced::Element<'static, Message> {
+fn candidate_row(c: PathBuf, in_use: bool, dark: bool) -> iced::Element<'static, Message> {
     container(
         row![
             icon(if in_use { "check-circle" } else { "hard-drive" }, 15.0),
@@ -1297,10 +1402,12 @@ impl App {
             Page::Help => self.view_help(dark),
         };
         let log_panel = self.view_log(dark);
-        let main: Column<Message> =
-            column![scrollable(self.page_shell(content)).height(Length::Fill), log_panel]
-                .width(Length::Fill)
-                .spacing(0);
+        let main: Column<Message> = column![
+            scrollable(self.page_shell(content)).height(Length::Fill),
+            log_panel
+        ]
+        .width(Length::Fill)
+        .spacing(0);
         // overlay the sheet / toast on top of the page
         // the modal takes priority over a toast; only one overlay at a time
         let overlay = if self.modal.is_some() {
@@ -1336,7 +1443,7 @@ impl App {
         row![
             Space::new().width(Length::Fill),
             container(content)
-                .width(Length::Shrink)
+                .width(Length::Fill)
                 .max_width(tsize::PAGE),
             Space::new().width(Length::Fill),
         ]
@@ -1389,7 +1496,11 @@ impl App {
             .width(Length::Fill)
             .padding([space::SM, space::MD])
             .style(theme::nav_item(dark, active));
-            nav = nav.push(if active { item } else { item.on_press(Message::Nav(p)) });
+            nav = nav.push(if active {
+                item
+            } else {
+                item.on_press(Message::Nav(p))
+            });
         }
 
         nav = nav.push(Space::new().height(Length::Fill));
@@ -1435,12 +1546,9 @@ impl App {
         let (title, body) = page_intro(page);
         container(
             column![
-                row![
-                    icon(page.icon(), isize::MD),
-                    h1(title),
-                ]
-                .spacing(space::MD)
-                .align_y(Alignment::Center),
+                row![icon(page.icon(), isize::MD), h1(title),]
+                    .spacing(space::MD)
+                    .align_y(Alignment::Center),
                 // prose is capped to ~72 characters so it stays readable
                 text(body)
                     .size(tsize::BODY)
@@ -1485,9 +1593,12 @@ impl App {
                         .spacing(space::XS),
                         Space::new().width(Length::Fill),
                         button(
-                            row![icon("folder-open", isize::SM), text("Change").size(tsize::BODY)]
-                                .spacing(space::SM)
-                                .align_y(Alignment::Center),
+                            row![
+                                icon("folder-open", isize::SM),
+                                text("Change").size(tsize::BODY)
+                            ]
+                            .spacing(space::SM)
+                            .align_y(Alignment::Center),
                         )
                         .on_press(Message::OpenFindGame)
                         .style(theme::btn_ghost(dark)),
@@ -1495,9 +1606,12 @@ impl App {
                     .spacing(space::MD)
                     .align_y(Alignment::Center),
                     button(
-                        row![icon("play", isize::LG), text("PLAY  —  Launch Game").size(tsize::BODY_LG)]
-                            .spacing(space::MD)
-                            .align_y(Alignment::Center),
+                        row![
+                            icon("play", isize::LG),
+                            text("PLAY  —  Launch Game").size(tsize::BODY_LG)
+                        ]
+                        .spacing(space::MD)
+                        .align_y(Alignment::Center),
                     )
                     .width(Length::Fill)
                     .padding([space::MD, space::MD])
@@ -1517,14 +1631,28 @@ impl App {
         let cards = [
             ("zap", "Game", st.game, "found", "not found"),
             ("layers", "Sider", st.sider, "running", "not installed"),
-            ("monitor", "Aspect fix", st.aspect, "installed", "not installed"),
-            ("save", "Save", st.settings, "save file found", "not found yet"),
+            (
+                "monitor",
+                "Aspect fix",
+                st.aspect,
+                "installed",
+                "not installed",
+            ),
+            (
+                "save",
+                "Save",
+                st.settings,
+                "save file found",
+                "not found yet",
+            ),
         ];
         // 2x2 grid: readable at 720p, breathable at 1440p.
         let mut grid: Column<Message> = column![].spacing(space::MD);
         for pair in cards.chunks(2) {
             let mut r = row![].spacing(space::MD);
-            for (ic, label, ok, good, bad) in pair.iter().map(|(a, b, c, d, e)| (*a, *b, *c, *d, *e)) {
+            for (ic, label, ok, good, bad) in
+                pair.iter().map(|(a, b, c, d, e)| (*a, *b, *c, *d, *e))
+            {
                 r = r.push(status_row(ic, label, if ok { good } else { bad }, dark));
             }
             grid = grid.push(r);
@@ -1562,7 +1690,8 @@ impl App {
                 container(
                     row![
                         icon("alert-triangle", isize::MD),
-                        text(format!("{} required component(s) missing", missing.len())).size(tsize::BODY),
+                        text(format!("{} required component(s) missing", missing.len()))
+                            .size(tsize::BODY),
                         iced::widget::Space::new().width(Length::Fill),
                         button(text("Open System").size(tsize::SMALL))
                             .on_press(Message::Nav(Page::System))
@@ -1581,11 +1710,9 @@ impl App {
 
     fn view_install(&self, _dark: bool) -> iced::Element<'_, Message> {
         let dark = self.mode == Mode::Dark;
-        let mut col: Column<Message> = column![
-            self.intro_card(Page::Install, dark),
-        ]
-        .spacing(space::LG)
-        .padding(space::GUTTER);
+        let mut col: Column<Message> = column![self.intro_card(Page::Install, dark),]
+            .spacing(space::LG)
+            .padding(space::GUTTER);
 
         col = col.push(step_card(
             dark,
@@ -1660,21 +1787,36 @@ impl App {
                 column![
                     text("Maintenance").size(tsize::H3),
                     row![
-                        button(row![icon("gamepad-2", isize::SM), text("Steam shortcut").size(tsize::BODY)].spacing(space::SM))
-                            .on_press(Message::MakeShortcut)
-                            .style(theme::btn_ghost(dark)),
-                        button(row![icon("trash-2", isize::SM), text("Clear Lutris cache").size(tsize::BODY)].spacing(space::SM))
-                            .on_press(Message::ClearCache)
-                            .style(theme::btn_ghost(dark)),
+                        button(
+                            row![
+                                icon("gamepad-2", isize::SM),
+                                text("Steam shortcut").size(tsize::BODY)
+                            ]
+                            .spacing(space::SM)
+                        )
+                        .on_press(Message::MakeShortcut)
+                        .style(theme::btn_ghost(dark)),
+                        button(
+                            row![
+                                icon("trash-2", isize::SM),
+                                text("Clear Lutris cache").size(tsize::BODY)
+                            ]
+                            .spacing(space::SM)
+                        )
+                        .on_press(Message::ClearCache)
+                        .style(theme::btn_ghost(dark)),
                     ]
                     .spacing(space::MD),
-                    sub("The Steam shortcut launches the game directly (--play, no window).", dark),
+                    sub(
+                        "The Steam shortcut launches the game directly (--play, no window).",
+                        dark
+                    ),
                 ]
                 .spacing(space::SM),
             )
             .padding(space::LG)
             .style(theme::card_style(dark))
-            .width(Length::Fill)
+            .width(Length::Fill),
         );
         col.into()
     }
@@ -1696,7 +1838,10 @@ impl App {
         .padding(space::GUTTER);
 
         if self.deck {
-            col = col.push(note_row(dark, "Steam Deck detected: Lutris installs via Flatpak; Wine comes with its runners."));
+            col = col.push(note_row(
+                dark,
+                "Steam Deck detected: Lutris installs via Flatpak; Wine comes with its runners.",
+            ));
         }
 
         let mut list: Column<Message> = column![].spacing(space::SM);
@@ -1717,25 +1862,37 @@ impl App {
             container(list)
                 .padding(space::LG)
                 .style(theme::card_style(dark))
-                .width(Length::Fill)
+                .width(Length::Fill),
         );
 
         col = col.push(
             container(
                 row![
-                    button(row![icon("refresh-cw", isize::SM), text("Recheck").size(tsize::BODY)].spacing(space::SM))
-                        .on_press(Message::DepsRefresh)
-                        .style(theme::btn_ghost(dark)),
+                    button(
+                        row![
+                            icon("refresh-cw", isize::SM),
+                            text("Recheck").size(tsize::BODY)
+                        ]
+                        .spacing(space::SM)
+                    )
+                    .on_press(Message::DepsRefresh)
+                    .style(theme::btn_ghost(dark)),
                     install_button(dark, missing.len(), self.busy),
-                    button(row![icon("copy", isize::SM), text("Copy commands").size(tsize::BODY)].spacing(space::SM))
-                        .on_press(Message::CopyInstallCmd)
-                        .style(theme::btn_ghost(dark)),
+                    button(
+                        row![
+                            icon("copy", isize::SM),
+                            text("Copy commands").size(tsize::BODY)
+                        ]
+                        .spacing(space::SM)
+                    )
+                    .on_press(Message::CopyInstallCmd)
+                    .style(theme::btn_ghost(dark)),
                 ]
                 .spacing(space::MD),
             )
             .padding(space::MD)
             .style(theme::card_style(dark))
-            .width(Length::Fill)
+            .width(Length::Fill),
         );
         if self.busy {
             col = col.push(busy_bar(dark, &self.sweep));
@@ -1747,105 +1904,198 @@ impl App {
         col.into()
     }
 
-    fn view_switcher(&self, _dark: bool) -> iced::Element<'_, Message> {
-        let dark = self.mode == Mode::Dark;
-        let src = self.game_dir.as_ref().and_then(|g| cpk_source(g));
+    fn view_switcher(&self, dark: bool) -> iced::Element<'_, Message> {
+        let game_dir = self.game_dir.as_ref();
+        let switcher = game_dir.map(|g| g.join(SWITCHER_EXE));
+        let installed = switcher.as_ref().is_some_and(|path| path.is_file());
+        let wine = which("wine").is_some();
+        let status = if !installed {
+            "FL27 Switcher is not installed. Reinstall the full game from SmokePatch."
+        } else if wine {
+            "FL27 Switcher is installed — change settings, then press Apply and Close."
+        } else {
+            "FL27 Switcher is installed, but system Wine is missing. On Steam Deck, start SP Football Life 2027 from Lutris and choose FL27 Switcher from the launch options."
+        };
+
         let mut col: Column<Message> = column![
             self.intro_card(Page::Switcher, dark),
+            container(
+                column![
+                    row![
+                        icon("check-circle", isize::MD),
+                        text("The safest way to change the gameplay settings").size(tsize::H3),
+                    ]
+                    .spacing(space::MD)
+                    .align_y(Alignment::Center),
+                    sub(status, dark),
+                    button(
+                        row![
+                            icon("settings", isize::MD),
+                            text("Open FL27 Switcher").size(tsize::BODY_LG),
+                        ]
+                        .spacing(space::SM)
+                        .align_y(Alignment::Center),
+                    )
+                    .on_press(Message::OpenSwitcher)
+                    .style(theme::btn_primary(dark)),
+                    sub(
+                        "Choose Gameplay, Controller Buttons, Classic Teams, Theme or Render Lighting, press Apply, then Close. Restart the game to see the changes.",
+                        dark,
+                    ),
+                ]
+                .spacing(space::MD),
+            )
+            .padding(space::LG)
+            .style(theme::card_style(dark))
+            .width(Length::Fill),
         ]
         .spacing(space::LG)
         .padding(space::GUTTER);
 
-        match &src {
-            Some(s) => {
-                col = col.push(path_chip(format!("Source (ships with the game): {}", short_path(&s.to_string_lossy(), 64)), dark));
-            }
-            None => {
-                col = col.push(note_row(dark, "The game's 'switcher' folder was not found — install the full game from SmokePatch."));
-            }
-        }
-
-        let targets = [
-            ("GP", "Gameplay version", "→ Data/dt18_all.cpk"),
-            ("Controller", "Controller buttons", "→ download/SMK_Addcontrol.cpk"),
-            ("Classics", "Legends in career modes", "→ download/08_smkdb_ulk.cpk"),
-        ];
-        let mut card_col = column![].spacing(space::MD);
-        for (key, label, target) in targets {
-            let opts: Vec<String> = self
-                .sw_opts
-                .iter()
-                .find(|(l, _)| *l == key)
-                .map(|(_, o)| o.clone())
-                .unwrap_or_default();
-            let cur: Option<String> = self
-                .sw_cur
-                .iter()
-                .find(|(l, _)| *l == key)
-                .map(|(_, c)| c.clone())
-                .filter(|c| !c.is_empty());
-            card_col = card_col.push(
-                column![
-                    text(label).size(tsize::BODY_LG),
-                    sub(target, dark),
-                    if opts.is_empty() {
-                        // nothing to choose from yet: say so instead of an empty menu
-                        container(
-                            row![
-                                icon("info", isize::SM),
-                                text("No options found for this group").size(tsize::SMALL),
-                            ]
-                            .spacing(space::SM)
-                            .align_y(Alignment::Center)
-                            .width(Length::Fill),
-                        )
-                        .padding([space::SM, space::MD])
-                        .style(theme::card_style(dark))
-                        .width(Length::Fill)
-                    } else {
-                        container(
-                            pick_list(opts, cur, move |c: String| Message::SwitcherPick(key, c))
-                                .placeholder("—")
-                                .width(Length::Fill),
-                        )
-                        .width(Length::Fill)
-                        .into()
-                    },
+        if self.switcher_advanced_open {
+            if let Some(src) = self.game_dir.as_ref().and_then(|g| cpk_source(g)) {
+                let mut card = column![
+                    row![
+                        text("Advanced: replace game data packs").size(tsize::H3),
+                        Space::new().width(Length::Fill),
+                        button(text("Close").size(tsize::SMALL))
+                            .on_press(Message::ToggleSwitcherAdvanced)
+                            .style(theme::btn_ghost(dark)),
+                    ]
+                    .align_y(Alignment::Center),
+                    sub(
+                        "Only use this if you downloaded the optional content packs yourself. It replaces the game files for gameplay, controller icons and classic-team modes.",
+                        dark,
+                    ),
+                    sub(
+                        "These files are included with the game installation — they are not part of this repository.",
+                        dark,
+                    ),
                 ]
-                .spacing(space::XS),
+                .spacing(space::MD);
+
+                for (key, label, target) in [
+                    ("GP", "Gameplay pack", "Replaces the gameplay data file."),
+                    ("Controller", "Controller icons", "Replaces the controller button-icon file."),
+                    ("Classics", "Classic career modes", "Replaces the classic-team data file."),
+                ] {
+                    let opts: Vec<String> = self
+                        .sw_opts
+                        .iter()
+                        .find(|(l, _)| *l == key)
+                        .map(|(_, o)| o.clone())
+                        .unwrap_or_default();
+                    let cur: Option<String> = self
+                        .sw_cur
+                        .iter()
+                        .find(|(l, _)| *l == key)
+                        .map(|(_, c)| c.clone())
+                        .filter(|c| !c.is_empty());
+
+                    card = card.push(column![
+                        text(label).size(tsize::BODY_LG),
+                        sub(target, dark),
+                        if opts.is_empty() {
+                            sub("No options found in the game folder.", dark)
+                        } else {
+                            container(
+                                pick_list(opts, cur, move |c: String| Message::SwitcherPick(key, c))
+                                    .placeholder("Choose an option")
+                                    .width(Length::Fill),
+                            )
+                            .width(Length::Fill)
+                            .into()
+                        },
+                    ]
+                    .spacing(space::XS));
+                }
+
+                card = card.push(
+                    button(
+                        row![
+                            icon("check", isize::SM),
+                            text("Apply selected packs").size(tsize::BODY),
+                        ]
+                        .spacing(space::SM)
+                        .align_y(Alignment::Center),
+                    )
+                    .on_press(Message::SwitcherApply)
+                    .style(theme::btn_primary(dark)),
+                );
+                card = card.push(sub(
+                    "Make a backup of your saves first if you changed them since the last match.",
+                    dark,
+                ));
+                card = card.push(sub(
+                    format!("Content-pack folder: {}", short_path(&src.to_string_lossy(), 72)),
+                    dark,
+                ));
+
+                col = col.push(
+                    container(card)
+                        .padding(space::LG)
+                        .style(theme::card_style(dark))
+                        .width(Length::Fill),
+                );
+            } else {
+                col = col.push(note_row(
+                    dark,
+                    "Advanced content packs are not installed. You can use Open FL27 Switcher above for theme, controller icons, gameplay and classic-team modes without them.",
+                ));
+                col = col.push(
+                    button(text("Close advanced section").size(tsize::SMALL))
+                        .on_press(Message::ToggleSwitcherAdvanced)
+                        .style(theme::btn_ghost(dark)),
+                );
+            }
+        } else {
+            col = col.push(
+                button(text("Advanced: replace game data packs").size(tsize::SMALL))
+                    .on_press(Message::ToggleSwitcherAdvanced)
+                    .style(theme::btn_ghost(dark)),
             );
         }
-        card_col = card_col.push(
-            button(row![icon("check", isize::SM), text("Apply choices").size(tsize::BODY)].spacing(space::SM))
-                .on_press(Message::SwitcherApply)
-                .style(theme::btn_primary(dark)),
-        );
-        card_col = card_col.push(
-            sub("Applied instantly. Restart the current match to feel gameplay changes.".to_string(), dark),
-        );
-        col = col.push(
-            container(card_col)
-                .padding(space::LG)
-                .style(theme::card_style(dark))
-                .width(Length::Fill)
-        );
+
         col.into()
     }
 
     fn view_settings(&self, _dark: bool) -> iced::Element<'_, Message> {
         let dark = self.mode == Mode::Dark;
-        let mut col: Column<Message> = column![
-            self.intro_card(Page::Settings, dark),
-        ]
-        .spacing(space::LG)
-        .padding(space::GUTTER);
+        let mut col: Column<Message> = column![self.intro_card(Page::Settings, dark),]
+            .spacing(space::LG)
+            .padding(space::GUTTER);
 
-        col = col.push(path_chip(format!("File: {}", short_path(&self.dat_path, 84)), dark));
+        col = col.push(path_chip(
+            format!("File: {}", short_path(&self.dat_path, 84)),
+            dark,
+        ));
 
         let combos = [
-            ("controller", "Controller", "Steam and Xbox pads: XInput. PlayStation pads: DirectInput.", vec!["DirectInput".to_string(), "XInput".to_string()], self.set_ctrl.clone()),
-            ("screen", "Screen mode", "Full Screen for matches; Windowed if you multitask.", vec!["Windowed".to_string(), "Full Screen".to_string()], self.set_screen.clone()),
-            ("vsync", "V-Sync", "Enable1 caps 60 fps and reduces heat (recommended).", vec!["Disabled".to_string(), "Enable1".to_string(), "Enable2".to_string()], self.set_vsync.clone()),
+            (
+                "controller",
+                "Controller",
+                "Steam and Xbox pads: XInput. PlayStation pads: DirectInput.",
+                vec!["DirectInput".to_string(), "XInput".to_string()],
+                self.set_ctrl.clone(),
+            ),
+            (
+                "screen",
+                "Screen mode",
+                "Full Screen for matches; Windowed if you multitask.",
+                vec!["Windowed".to_string(), "Full Screen".to_string()],
+                self.set_screen.clone(),
+            ),
+            (
+                "vsync",
+                "V-Sync",
+                "Enable1 caps 60 fps and reduces heat (recommended).",
+                vec![
+                    "Disabled".to_string(),
+                    "Enable1".to_string(),
+                    "Enable2".to_string(),
+                ],
+                self.set_vsync.clone(),
+            ),
         ];
         let mut card_col: Column<Message> = column![].spacing(space::MD);
         for (kind, label, caption, opts, cur) in combos {
@@ -1862,52 +2112,74 @@ impl App {
             );
         }
         card_col = card_col.push(
-            button(row![icon("save", isize::SM), text("Save settings").size(tsize::BODY)].spacing(space::SM))
-                .on_press(Message::SettingsSave)
-                .style(theme::btn_primary(dark)),
+            button(
+                row![
+                    icon("save", isize::SM),
+                    text("Save settings").size(tsize::BODY)
+                ]
+                .spacing(space::SM),
+            )
+            .on_press(Message::SettingsSave)
+            .style(theme::btn_primary(dark)),
         );
         col = col.push(
             container(card_col)
                 .padding(space::LG)
                 .style(theme::card_style(dark))
-                .width(Length::Fill)
+                .width(Length::Fill),
         );
         col.into()
     }
 
     fn view_saves(&self, _dark: bool) -> iced::Element<'_, Message> {
         let dark = self.mode == Mode::Dark;
-        let mut col: Column<Message> = column![
-            self.intro_card(Page::Saves, dark),
-        ]
-        .spacing(space::LG)
-        .padding(space::GUTTER);
+        let mut col: Column<Message> = column![self.intro_card(Page::Saves, dark),]
+            .spacing(space::LG)
+            .padding(space::GUTTER);
 
         let kon = self
             .konami()
             .map(|p| p.display().to_string())
-            .unwrap_or_else(|| "the game save folder not found yet — launch the game once to create it.".into());
-        col = col.push(path_chip(format!("Location: {}", short_path(&kon, 84)), dark));
+            .unwrap_or_else(|| {
+                "the game save folder not found yet — launch the game once to create it.".into()
+            });
+        col = col.push(path_chip(
+            format!("Location: {}", short_path(&kon, 84)),
+            dark,
+        ));
 
         col = col.push(
             container(
                 row![
-                    button(row![icon("save", isize::SM), text("Back up now").size(tsize::BODY)].spacing(space::SM))
-                        .on_press(Message::BackupNow)
-                        .style(theme::btn_primary(dark)),
-                    button(row![icon("folder-open", isize::SM), text("Restore…").size(tsize::BODY)].spacing(space::SM))
-                        .on_press(Message::OpenRestoreModal)
-                        .style(theme::btn_ghost(dark)),
+                    button(
+                        row![
+                            icon("save", isize::SM),
+                            text("Back up now").size(tsize::BODY)
+                        ]
+                        .spacing(space::SM)
+                    )
+                    .on_press(Message::BackupNow)
+                    .style(theme::btn_primary(dark)),
+                    button(
+                        row![
+                            icon("folder-open", isize::SM),
+                            text("Restore…").size(tsize::BODY)
+                        ]
+                        .spacing(space::SM)
+                    )
+                    .on_press(Message::OpenRestoreModal)
+                    .style(theme::btn_ghost(dark)),
                 ]
                 .spacing(space::MD),
             )
             .padding(space::MD)
             .style(theme::card_style(dark))
-            .width(Length::Fill)
+            .width(Length::Fill),
         );
 
         if !self.backups.is_empty() {
-            let mut list: Column<Message> = column![text("Available backups").size(tsize::BODY_LG)].spacing(space::SM);
+            let mut list: Column<Message> =
+                column![text("Available backups").size(tsize::BODY_LG)].spacing(space::SM);
             let home = std::env::var("HOME").unwrap_or_default();
             for b in self.backups.iter().take(8) {
                 let full = PathBuf::from(&home)
@@ -1921,7 +2193,11 @@ impl App {
                     container(
                         row![
                             icon(
-                                if selected { "check-circle" } else { "hard-drive" },
+                                if selected {
+                                    "check-circle"
+                                } else {
+                                    "hard-drive"
+                                },
                                 isize::SM,
                             ),
                             text(b).size(tsize::SMALL),
@@ -1936,7 +2212,7 @@ impl App {
                             )
                             .on_press(Message::RevealPath(reveal_dir))
                             .style(theme::btn_ghost(dark)),
-                                                        button(text("Restore").size(tsize::MICRO))
+                            button(text("Restore").size(tsize::MICRO))
                                 .on_press(Message::PickRestore(full))
                                 .style(theme::btn_selectable(dark, selected)),
                         ]
@@ -1945,7 +2221,7 @@ impl App {
                     )
                     .padding(space::SM)
                     .style(theme::card_style(dark))
-                    .width(Length::Fill)
+                    .width(Length::Fill),
                 );
             }
             col = col.push(list);
@@ -1970,24 +2246,28 @@ impl App {
         ];
         for (k, v) in rows {
             col = col.push(
-                container(
-                    column![text(k).size(tsize::BODY_LG), sub(v, dark)].spacing(space::XS)
-                )
+                container(column![text(k).size(tsize::BODY_LG), sub(v, dark)].spacing(space::XS))
                     .padding(space::MD)
                     .style(theme::card_style(dark))
-                    .width(Length::Fill)
+                    .width(Length::Fill),
             );
         }
         col = col.push(
             container(
                 column![
                     text("Keyboard shortcuts").size(tsize::BODY_LG),
-                    row![chip("F5", dark), sub("Recheck dependencies on the System page", dark)]
-                        .spacing(space::SM)
-                        .align_y(Alignment::Center),
-                    row![chip("Ctrl+L", dark), sub("Show or hide the Activity log", dark)]
-                        .spacing(space::SM)
-                        .align_y(Alignment::Center),
+                    row![
+                        chip("F5", dark),
+                        sub("Recheck dependencies on the System page", dark)
+                    ]
+                    .spacing(space::SM)
+                    .align_y(Alignment::Center),
+                    row![
+                        chip("Ctrl+L", dark),
+                        sub("Show or hide the Activity log", dark)
+                    ]
+                    .spacing(space::SM)
+                    .align_y(Alignment::Center),
                     row![chip("Esc", dark), sub("Close any open dialog", dark)]
                         .spacing(space::SM)
                         .align_y(Alignment::Center),
@@ -2013,9 +2293,12 @@ impl App {
                     text("Full guides live in the docs folder.").size(tsize::BODY),
                     Space::new().width(Length::Fill),
                     button(
-                        row![icon("folder-open", isize::SM), text("Open guides").size(tsize::BODY)]
-                            .spacing(space::SM)
-                            .align_y(Alignment::Center),
+                        row![
+                            icon("folder-open", isize::SM),
+                            text("Open guides").size(tsize::BODY)
+                        ]
+                        .spacing(space::SM)
+                        .align_y(Alignment::Center),
                     )
                     .on_press(Message::OpenDocs)
                     .style(theme::btn_ghost(dark)),
@@ -2030,150 +2313,174 @@ impl App {
         col.into()
     }
 
-/// Toast rendered over the page content (bottom-centre), via `stack`.
-/// Dismissed after `TOAST_SECS` by the 1s `Tick` subscription.
-fn toast_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
-    let (kind, msg) = self.toast.as_ref()?;
-    let c = theme::tok(dark);
-    let (color, name) = match kind {
-        ToastKind::Success => (c.success, "Success"),
-        ToastKind::Error => (c.danger, "Error"),
-        ToastKind::Info => (c.text_muted, "Info"),
-    };
-    let card = container(
-        row![
-            text(name).size(tsize::SMALL).color(color),
-            text(msg).size(tsize::SMALL),
-            Space::new().width(Length::Fill),
-            button(text("\u{2715}").size(tsize::SMALL))
-                .on_press(Message::DismissToast)
-                .style(theme::btn_quiet(dark)),
-        ]
-        .spacing(space::MD)
-        .align_y(Alignment::Center),
-    )
-    .padding([space::SM, space::MD])
-    .max_width(space::SIDEBAR * 4.0)
-    .style(move |_t: &iced::Theme| iced::widget::container::Style {
-        background: Some(iced::Background::Color(c.surface_3)),
-        border: iced::Border {
-            radius: theme::radius::MD.into(),
-            width: 1.0,
-            color: color,
-        },
-        text_color: None,
-        shadow: iced::Shadow {
-            color: Color::from_rgba(0.0, 0.0, 0.0, 0.35),
-            offset: iced::Vector::new(0.0, 4.0),
-            blur_radius: 12.0,
-        },
-        snap: true,
-    });
+    /// Toast rendered over the page content (bottom-centre), via `stack`.
+    /// Dismissed after `TOAST_SECS` by the 1s `Tick` subscription.
+    fn toast_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
+        let (kind, msg) = self.toast.as_ref()?;
+        let c = theme::tok(dark);
+        let (color, name) = match kind {
+            ToastKind::Success => (c.success, "Success"),
+            ToastKind::Error => (c.danger, "Error"),
+            ToastKind::Info => (c.text_muted, "Info"),
+        };
+        let card = container(
+            row![
+                text(name).size(tsize::SMALL).color(color),
+                text(msg).size(tsize::SMALL),
+                Space::new().width(Length::Fill),
+                button(text("\u{2715}").size(tsize::SMALL))
+                    .on_press(Message::DismissToast)
+                    .style(theme::btn_quiet(dark)),
+            ]
+            .spacing(space::MD)
+            .align_y(Alignment::Center),
+        )
+        .padding([space::SM, space::MD])
+        .max_width(space::SIDEBAR * 4.0)
+        .style(move |_t: &iced::Theme| iced::widget::container::Style {
+            background: Some(iced::Background::Color(c.surface_3)),
+            border: iced::Border {
+                radius: theme::radius::MD.into(),
+                width: 1.0,
+                color: color,
+            },
+            text_color: None,
+            shadow: iced::Shadow {
+                color: Color::from_rgba(0.0, 0.0, 0.0, 0.35),
+                offset: iced::Vector::new(0.0, 4.0),
+                blur_radius: 12.0,
+            },
+            snap: true,
+        });
 
-    Some(
-        container(card)
-            .width(Length::Fill)
-            .height(Length::Fill)
-            .align_x(Alignment::Center)
-            .align_y(Alignment::End)
-            .padding(space::XXL)
-            .into(),
-    )
-}
+        Some(
+            container(card)
+                .width(Length::Fill)
+                .height(Length::Fill)
+                .align_x(Alignment::Center)
+                .align_y(Alignment::End)
+                .padding(space::XXL)
+                .into(),
+        )
+    }
 
-/// Modal sheet + scrim, rendered above the page content.
-fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
-    let sheet = match self.modal.as_ref()? {
-        Modal::Restore => {
-            let src = self.restore_path.trim().to_string();
-            let dest = self
-                .konami()
-                .map(|k| k.display().to_string())
-                .unwrap_or_else(|| "Save folder not found".to_string());
-            column![
-                row![icon("save", isize::LG), text("Restore save").size(tsize::H2)]
+    /// Modal sheet + scrim, rendered above the page content.
+    fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
+        let sheet = match self.modal.as_ref()? {
+            Modal::Restore => {
+                let src = self.restore_path.trim().to_string();
+                let dest = self
+                    .konami()
+                    .map(|k| k.display().to_string())
+                    .unwrap_or_else(|| "Save folder not found".to_string());
+                column![
+                    row![
+                        icon("save", isize::LG),
+                        text("Restore save").size(tsize::H2)
+                    ]
                     .spacing(space::MD)
                     .align_y(Alignment::Center),
-                sub(
-                    "This overwrites your current career and match progress.",
-                    dark
-                ),
-                column![
-                    row![text("From").size(tsize::SMALL).width(Length::Fixed(64.0)), text(src.clone()).size(tsize::SMALL)]
+                    sub(
+                        "This overwrites your current career and match progress.",
+                        dark
+                    ),
+                    column![
+                        row![
+                            text("From").size(tsize::SMALL).width(Length::Fixed(64.0)),
+                            text(src.clone()).size(tsize::SMALL)
+                        ]
                         .spacing(space::MD),
-                    row![text("To").size(tsize::SMALL).width(Length::Fixed(64.0)), text(dest).size(tsize::SMALL)]
+                        row![
+                            text("To").size(tsize::SMALL).width(Length::Fixed(64.0)),
+                            text(dest).size(tsize::SMALL)
+                        ]
                         .spacing(space::MD),
-                ]
-                .spacing(space::XXS),
-                if self.restore_armed {
-                    sub("Last chance: this cannot be undone.", dark)
-                } else {
-                    Space::new().height(space::XS).into()
-                },
-                row![
-                    button(text("Cancel").size(tsize::BODY))
-                        .on_press(Message::CloseModal)
-                        .style(theme::btn_ghost(dark)),
-                    Space::new().width(Length::Fill),
-                    button(text(if self.restore_armed { "Overwrite now" } else { "Restore" }).size(tsize::BODY))
+                    ]
+                    .spacing(space::XXS),
+                    if self.restore_armed {
+                        sub("Last chance: this cannot be undone.", dark)
+                    } else {
+                        Space::new().height(space::XS).into()
+                    },
+                    row![
+                        button(text("Cancel").size(tsize::BODY))
+                            .on_press(Message::CloseModal)
+                            .style(theme::btn_ghost(dark)),
+                        Space::new().width(Length::Fill),
+                        button(
+                            text(if self.restore_armed {
+                                "Overwrite now"
+                            } else {
+                                "Restore"
+                            })
+                            .size(tsize::BODY)
+                        )
                         .on_press(Message::RestoreConfirm)
                         .style(theme::btn_danger(dark)),
+                    ]
+                    .spacing(space::MD),
                 ]
-                .spacing(space::MD),
-            ]
-            .spacing(space::LG)
-            .max_width(space::SIDEBAR * 4.0)
-        }
-        Modal::FindGame => {
-            // Same card as wizard step 1, scrollable: search results and the
-            // checklist can grow taller than the sheet.
-            let inner: iced::Element<'_, Message> = self.find_game_card(dark).into();
-            column![
-                row![
-                    icon("search", isize::LG),
-                    text("Find game").size(tsize::H2),
-                    Space::new().width(Length::Fill),
-                    button(text("Done").size(tsize::BODY))
-                        .on_press(Message::CloseModal)
-                        .style(theme::btn_ghost(dark)),
+                .spacing(space::LG)
+                .max_width(space::SIDEBAR * 4.0)
+            }
+            Modal::FindGame => {
+                // Same card as wizard step 1, scrollable: search results and the
+                // checklist can grow taller than the sheet.
+                let inner: iced::Element<'_, Message> = self.find_game_card(dark).into();
+                column![
+                    row![
+                        icon("search", isize::LG),
+                        text("Find game").size(tsize::H2),
+                        Space::new().width(Length::Fill),
+                        button(text("Done").size(tsize::BODY))
+                            .on_press(Message::CloseModal)
+                            .style(theme::btn_ghost(dark)),
+                    ]
+                    .spacing(space::MD)
+                    .align_y(Alignment::Center),
+                    scrollable(inner).height(Length::Fixed(472.0)), // sheet must fit a 620px window
                 ]
-                .spacing(space::MD)
-                .align_y(Alignment::Center),
-                scrollable(inner).height(Length::Fixed(472.0)), // sheet must fit a 620px window
-            ]
-            .spacing(space::LG)
-            .max_width(space::SIDEBAR * 4.0)
-        }
-    };
-    Some(
-        container(
-            container(sheet)
-                .padding(space::XXL)
-                .style(theme::card_style_with(dark, None, 2))
-                .max_width(space::SIDEBAR * 4.0),
+                .spacing(space::LG)
+                .max_width(space::SIDEBAR * 4.0)
+            }
+        };
+        Some(
+            container(
+                container(sheet)
+                    .padding(space::XXL)
+                    .style(theme::card_style_with(dark, None, 2))
+                    .max_width(space::SIDEBAR * 4.0),
+            )
+            .width(Length::Fill)
+            .height(Length::Fill)
+            .center_x(Length::Fill)
+            .center_y(Length::Fill)
+            .style(move |_t: &iced::Theme| iced::widget::container::Style {
+                background: Some(iced::Background::Color(Color::from_rgba(
+                    0.0, 0.0, 0.0, 0.55,
+                ))),
+                ..Default::default()
+            })
+            .into(),
         )
-        .width(Length::Fill)
-        .height(Length::Fill)
-        .center_x(Length::Fill)
-        .center_y(Length::Fill)
-        .style(move |_t: &iced::Theme| iced::widget::container::Style {
-            background: Some(iced::Background::Color(Color::from_rgba(0.0, 0.0, 0.0, 0.55))),
-            ..Default::default()
-        })
-        .into(),
-    )
-}
+    }
 
     /// Activity log — a drawer, collapsed by default so it never competes
     /// with the page content. Shows the newest line even when collapsed.
     fn view_log(&self, dark: bool) -> iced::Element<'_, Message> {
         let c = theme::tok(dark);
         let newest = self.logs.last().cloned().unwrap_or_default();
-        let mut body: Column<Message> = column![]
-            .spacing(space::SM)
-            .padding([space::SM, space::MD]);
+        let mut body: Column<Message> =
+            column![].spacing(space::SM).padding([space::SM, space::MD]);
         let mut head: Row<Message> = row![
-            icon(if self.log_open { "chevron-right" } else { "layers" }, isize::SM),
+            icon(
+                if self.log_open {
+                    "chevron-right"
+                } else {
+                    "layers"
+                },
+                isize::SM
+            ),
             text("Activity").size(tsize::SMALL),
             Space::new().width(Length::Fill),
         ]
@@ -2226,110 +2533,106 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
     fn find_game_card<'a>(&self, dark: bool) -> Column<'a, Message> {
         let mut col: Column<Message> = column![].spacing(space::LG);
 
-                // Already-selected game: success card with component checklist.
-                if let Some(g) = self.game_dir.clone() {
-                    let success: Column<Message> = column![
-                        row![
-                            icon("check-circle", isize::MD),
-                            text("Game folder set").size(tsize::BODY_LG)
-                        ]
-                        .spacing(space::SM)
-                        .align_y(Alignment::Center),
-                        path_chip(g.display().to_string(), dark),
-                        dir_check_list(&g, 1, dark),
-                    ]
-                    .spacing(space::SM);
-                    col = col.push(
-                        container(success)
-                            .padding(space::MD)
-                            .style(theme::card_style(dark))
-                            .width(Length::Fill),
-                    );
-                }
+        // Already-selected game: success card with component checklist.
+        if let Some(g) = self.game_dir.clone() {
+            let success: Column<Message> = column![
+                row![
+                    icon("check-circle", isize::MD),
+                    text("Game folder set").size(tsize::BODY_LG)
+                ]
+                .spacing(space::SM)
+                .align_y(Alignment::Center),
+                path_chip(g.display().to_string(), dark),
+                dir_check_list(&g, 1, dark),
+            ]
+            .spacing(space::SM);
+            col = col.push(
+                container(success)
+                    .padding(space::MD)
+                    .style(theme::card_style(dark))
+                    .width(Length::Fill),
+            );
+        }
 
-                // Automatic search.
-                let scan_status = if self.scanning {
-                    "Looking in the usual Lutris places...".to_string()
-                } else if self.candidates.is_empty() {
-                    "No game found yet.".to_string()
-                } else {
-                    format!("{} game(s) listed below.", self.candidates.len())
-                };
-                col = col.push(
+        // Automatic search.
+        let scan_status = if self.scanning {
+            "Looking in the usual Lutris places...".to_string()
+        } else if self.candidates.is_empty() {
+            "No game found yet.".to_string()
+        } else {
+            format!("{} game(s) listed below.", self.candidates.len())
+        };
+        col = col.push(
+            row![
+                button(
                     row![
-                        button(
-                            row![
-                                icon("search", isize::SM),
-                                text(if self.scanning {
-                                    "Searching..."
-                                } else {
-                                    "Search automatically"
-                                })
-                                .size(tsize::BODY)
-                            ]
-                            .spacing(space::SM)
-                        )
-                        .on_press(Message::AutoDetect)
-                        .style(theme::btn_primary(dark)),
-                        text(scan_status).size(tsize::SMALL),
+                        icon("search", isize::SM),
+                        text(if self.scanning {
+                            "Searching..."
+                        } else {
+                            "Search automatically"
+                        })
+                        .size(tsize::BODY)
                     ]
-                    .spacing(space::MD)
-                    .align_y(Alignment::Center),
-                );
+                    .spacing(space::SM)
+                )
+                .on_press(Message::AutoDetect)
+                .style(theme::btn_primary(dark)),
+                text(scan_status).size(tsize::SMALL),
+            ]
+            .spacing(space::MD)
+            .align_y(Alignment::Center),
+        );
 
-                // Search results: pick one.
-                if !self.candidates.is_empty() {
-                    let mut list: Column<Message> =
-                        column![text("Found").size(tsize::BODY_LG)].spacing(space::SM);
-                    for c in self.candidates.clone() {
-                        let in_use =
-                            self.game_dir.as_ref().is_some_and(|g| g == &c);
-                        list = list.push(candidate_row(c, in_use, dark));
-                    }
-                    col = col.push(list);
-                }
+        // Search results: pick one.
+        if !self.candidates.is_empty() {
+            let mut list: Column<Message> =
+                column![text("Found").size(tsize::BODY_LG)].spacing(space::SM);
+            for c in self.candidates.clone() {
+                let in_use = self.game_dir.as_ref().is_some_and(|g| g == &c);
+                list = list.push(candidate_row(c, in_use, dark));
+            }
+            col = col.push(list);
+        }
 
-                // Manual pick: browse the disk or paste a path.
-                col = col.push(text("Or choose the folder yourself:").size(tsize::BODY));
-                col = col.push(
+        // Manual pick: browse the disk or paste a path.
+        col = col.push(text("Or choose the folder yourself:").size(tsize::BODY));
+        col = col.push(
+            row![
+                text_input("Paste game folder path ...", &self.manual_path)
+                    .on_input(Message::ManualPathChanged)
+                    .padding(space::MD)
+                    .width(Length::Fill)
+                    .style(theme::input_style(dark)),
+                button(
                     row![
-                        text_input(
-                            "Paste game folder path ...",
-                            &self.manual_path
-                        )
-                        .on_input(Message::ManualPathChanged)
-                        .padding(space::MD)
-                        .width(Length::Fill)
-                        .style(theme::input_style(dark)),
-                        button(
-                            row![
-                                icon("folder-open", isize::SM),
-                                text("Browse...").size(tsize::BODY)
-                            ]
-                            .spacing(space::SM)
-                        )
-                        .on_press(Message::BrowseFolder)
-                        .style(theme::btn_ghost(dark)),
+                        icon("folder-open", isize::SM),
+                        text("Browse...").size(tsize::BODY)
                     ]
-                    .spacing(space::MD)
-                    .align_y(Alignment::Center),
-                );
+                    .spacing(space::SM)
+                )
+                .on_press(Message::BrowseFolder)
+                .style(theme::btn_ghost(dark)),
+            ]
+            .spacing(space::MD)
+            .align_y(Alignment::Center),
+        );
 
-                // Live validation checklist for the typed path.
-                if !self.manual_path.trim().is_empty() {
-                    let expanded = expand_path(&self.manual_path);
-                    col = col.push(dir_check_list(&expanded, 0, dark));
-                }
+        // Live validation checklist for the typed path.
+        if !self.manual_path.trim().is_empty() {
+            let expanded = expand_path(&self.manual_path);
+            col = col.push(dir_check_list(&expanded, 0, dark));
+        }
 
-                col = col.push(
-                    button(text("Use this folder").size(tsize::BODY))
-                        .on_press(Message::ApplyManualPath)
-                        .style(theme::btn_primary(dark)),
-                );
-                col = col.push(sub(
-                    "Tip: the folder name ends with \"SP Football Life 2027\".",
-                    dark,
-                ));
+        col = col.push(
+            button(text("Use this folder").size(tsize::BODY))
+                .on_press(Message::ApplyManualPath)
+                .style(theme::btn_primary(dark)),
+        );
+        col = col.push(sub(
+            "Tip: the folder name ends with \"SP Football Life 2027\".",
+            dark,
+        ));
         col
     }
 
@@ -2353,9 +2656,13 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
             rail = rail.push(
                 container(
                     row![
-                        text(if done { "\u{2713}".to_string() } else { format!("{}", i + 1) })
-                            .size(tsize::SMALL)
-                            .color(fg),
+                        text(if done {
+                            "\u{2713}".to_string()
+                        } else {
+                            format!("{}", i + 1)
+                        })
+                        .size(tsize::SMALL)
+                        .color(fg),
                         text(*s).size(tsize::SMALL).color(fg),
                     ]
                     .spacing(space::SM)
@@ -2440,10 +2747,16 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
         };
 
         let back: iced::Element<'_, Message> = if self.setup_step > 0 {
-            button(row![icon("arrow-left", isize::SM), text("Back").size(tsize::BODY)].spacing(space::SM))
-                .on_press(Message::SetupBack)
-                .style(theme::btn_ghost(dark))
-                .into()
+            button(
+                row![
+                    icon("arrow-left", isize::SM),
+                    text("Back").size(tsize::BODY)
+                ]
+                .spacing(space::SM),
+            )
+            .on_press(Message::SetupBack)
+            .style(theme::btn_ghost(dark))
+            .into()
         } else {
             Space::new().width(Length::Shrink).into()
         };
@@ -2452,7 +2765,12 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
             iced::widget::Space::new().width(Length::Fill),
             button(
                 row![
-                    text(if self.setup_step == 3 { "Finish" } else { "Continue" }).size(tsize::BODY),
+                    text(if self.setup_step == 3 {
+                        "Finish"
+                    } else {
+                        "Continue"
+                    })
+                    .size(tsize::BODY),
                     icon("chevron-right", isize::SM)
                 ]
                 .spacing(space::SM)
@@ -2463,8 +2781,7 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
         .align_y(Alignment::Center);
 
         // Progress bar: thin, rounded. Colour comes from the theme accent.
-        let progress =
-            progress_bar(0.0..=1.0, self.setup_step as f32 / 3.0).girth(4.0);
+        let progress = progress_bar(0.0..=1.0, self.setup_step as f32 / 3.0).girth(4.0);
 
         container(
             column![
@@ -2520,7 +2837,14 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
         let c = theme::tok(dark);
         let newest = self.logs.last().cloned().unwrap_or_default();
         let mut head: Row<Message> = row![
-            icon(if self.log_open { "chevron-right" } else { "layers" }, isize::SM),
+            icon(
+                if self.log_open {
+                    "chevron-right"
+                } else {
+                    "layers"
+                },
+                isize::SM
+            ),
             text("Activity").size(tsize::SMALL),
             Space::new().width(Length::Fill),
         ]
@@ -2559,11 +2883,12 @@ fn modal_layer(&self, dark: bool) -> Option<iced::Element<'_, Message>> {
     }
 }
 
-
 /// Fast first paint for the Find-game step: known spots only (no disk scan).
 fn initial_candidates(current: Option<&std::path::Path>) -> Vec<PathBuf> {
-    let mut out: Vec<PathBuf> =
-        candidate_dirs().into_iter().filter(|p| is_game_dir(p)).collect();
+    let mut out: Vec<PathBuf> = candidate_dirs()
+        .into_iter()
+        .filter(|p| is_game_dir(p))
+        .collect();
     if let Some(g) = current {
         if is_game_dir(g) && !out.contains(&g.to_path_buf()) {
             out.push(g.to_path_buf());
@@ -2576,20 +2901,21 @@ fn initial_candidates(current: Option<&std::path::Path>) -> Vec<PathBuf> {
 
 /// Indeterminate progress bar. The sweep is animated by the 1s tick; a fixed
 /// value would look frozen, so the bar reads as "working" rather than stuck.
-fn busy_bar(dark: bool, sweep: &iced::animation::Animation<f32>) -> iced::Element<'static, Message> {
+fn busy_bar(
+    dark: bool,
+    sweep: &iced::animation::Animation<f32>,
+) -> iced::Element<'static, Message> {
     let now = std::time::Instant::now();
-    let v = sweep.interpolate_with(|t| t * 0.70 + 0.15, now).clamp(0.0, 1.0);
-    container(
-        progress_bar(0.0..=1.0, v)
-            .girth(4.0)
-            .length(Length::Fill),
-    )
-    .padding([space::XS, 0.0])
-    .style(move |_t: &iced::Theme| iced::widget::container::Style {
-        background: Some(iced::Background::Color(theme::tok(dark).surface)),
-        ..Default::default()
-    })
-    .into()
+    let v = sweep
+        .interpolate_with(|t| t * 0.70 + 0.15, now)
+        .clamp(0.0, 1.0);
+    container(progress_bar(0.0..=1.0, v).girth(4.0).length(Length::Fill))
+        .padding([space::XS, 0.0])
+        .style(move |_t: &iced::Theme| iced::widget::container::Style {
+            background: Some(iced::Background::Color(theme::tok(dark).surface)),
+            ..Default::default()
+        })
+        .into()
 }
 
 fn install_button(dark: bool, missing: usize, busy: bool) -> iced::Element<'static, Message> {
@@ -2598,10 +2924,9 @@ fn install_button(dark: bool, missing: usize, busy: bool) -> iced::Element<'stat
     } else {
         format!("Install missing ({missing})")
     };
-    let btn = button(
-        row![icon("download", isize::SM), text(label).size(tsize::BODY)].spacing(space::SM),
-    )
-    .style(theme::btn_primary(dark));
+    let btn =
+        button(row![icon("download", isize::SM), text(label).size(tsize::BODY)].spacing(space::SM))
+            .style(theme::btn_primary(dark));
     if busy {
         btn.into()
     } else {
@@ -2634,7 +2959,10 @@ fn step_card<'a>(
             row![
                 container(text(n).size(tsize::BODY))
                     .padding([space::XXS, space::SM])
-                    .style(theme::pill_style(theme::tok(dark).surface_2, theme::tok(dark).border)),
+                    .style(theme::pill_style(
+                        theme::tok(dark).surface_2,
+                        theme::tok(dark).border
+                    )),
                 text(title).size(tsize::H3),
             ]
             .spacing(space::MD)
@@ -2649,7 +2977,6 @@ fn step_card<'a>(
     .width(Length::Fill)
     .into()
 }
-
 
 #[cfg(test)]
 mod ui_tests {
@@ -2675,7 +3002,11 @@ mod ui_tests {
             let lock = lock_config();
             let path = config_path();
             let before = std::fs::read(&path).ok();
-            Self { _lock: lock, path, before }
+            Self {
+                _lock: lock,
+                path,
+                before,
+            }
         }
     }
 
@@ -2712,10 +3043,27 @@ mod ui_tests {
     #[test]
     fn setup_wizard_appears_without_game() {
         let _guard = lock_config();
-        let (app, _) = App::new();
-        // no game installed on this machine -> wizard must appear
+        // Isolate the "first run" scenario from the developer's real HOME:
+        // no saved config and no game under the standard default paths.
+        let home = std::env::temp_dir().join(format!("spfl27-no-game-{}", std::process::id()));
+        let _ = std::fs::create_dir_all(&home);
+        let old_home = std::env::var_os("HOME");
+        let old_xdg = std::env::var_os("XDG_CONFIG_HOME");
+        std::env::set_var("HOME", &home);
+        std::env::set_var("XDG_CONFIG_HOME", home.join(".config"));
+        let built = std::panic::catch_unwind(std::panic::AssertUnwindSafe(App::new));
+        match old_home {
+            Some(v) => std::env::set_var("HOME", v),
+            None => std::env::remove_var("HOME"),
+        }
+        match old_xdg {
+            Some(v) => std::env::set_var("XDG_CONFIG_HOME", v),
+            None => std::env::remove_var("XDG_CONFIG_HOME"),
+        }
+        let (app, _) = built.expect("App::new must not panic without game");
         assert!(app.setup, "wizard must show on first run without game");
         assert_eq!(app.setup_step, 0);
+        let _ = std::fs::remove_dir_all(home);
     }
 
     #[test]
@@ -2741,7 +3089,10 @@ mod ui_tests {
         app.setup_step = 1;
         app.game_dir = None;
         let _ = app.update(Message::SetupNext);
-        assert_eq!(app.setup_step, 1, "must not advance past step 1 without a game");
+        assert_eq!(
+            app.setup_step, 1,
+            "must not advance past step 1 without a game"
+        );
     }
 
     #[test]
@@ -2794,7 +3145,10 @@ mod ui_tests {
     fn short_path_keeps_short_strings_and_truncates_long_paths() {
         // short strings and non-path prose pass through unchanged
         assert_eq!(short_path("/games", 88), "/games");
-        assert_eq!(short_path("Choose the game folder.", 88), "Choose the game folder.");
+        assert_eq!(
+            short_path("Choose the game folder.", 88),
+            "Choose the game folder."
+        );
         let long = "/run/media/alfarez/DataLinux/Games/sp-football-life-2027/drive_c/Program Files (x86)/SP Football Life 2027";
         let t = short_path(long, 88);
         assert!(t.chars().count() <= 88);
@@ -2815,7 +3169,9 @@ mod ui_tests {
                 continue;
             }
             for m in METHODS {
-                let Some(rest) = line.split(m).nth(1) else { continue };
+                let Some(rest) = line.split(m).nth(1) else {
+                    continue;
+                };
                 let arg = rest
                     .trim_start()
                     .trim_start_matches('(')
@@ -2842,7 +3198,9 @@ mod ui_tests {
     #[test]
     fn intros_are_english_only() {
         // spot-check: common Indonesian words must not appear in UI guides
-        let id_words = [" yang ", " dan ", " untuk ", " dengan ", " belum ", " sudah "];
+        let id_words = [
+            " yang ", " dan ", " untuk ", " dengan ", " belum ", " sudah ",
+        ];
         for p in Page::ALL {
             let (_, b) = page_intro(p);
             let low = format!(" {b} ").to_lowercase();
@@ -2854,55 +3212,44 @@ mod ui_tests {
             let (_, b) = setup_intro(step);
             let low = format!(" {b} ").to_lowercase();
             for w in id_words {
-                assert!(!low.contains(w), "setup step {step} contains Indonesian: {w}");
+                assert!(
+                    !low.contains(w),
+                    "setup step {step} contains Indonesian: {w}"
+                );
             }
         }
     }
 
     /// Build a synthetic KeyPressed event for shortcut tests.
-    fn key_press(
-        key: iced::keyboard::Key,
-        ctrl: bool,
-    ) -> Message {
+    fn key_press(key: iced::keyboard::Key, ctrl: bool) -> Message {
         let mut modifiers = iced::keyboard::Modifiers::default();
         if ctrl {
             modifiers = modifiers | iced::keyboard::Modifiers::CTRL;
         }
-        Message::KeyPressed(iced::Event::Keyboard(
-            iced::keyboard::Event::KeyPressed {
-                key: key.clone(),
-                modified_key: key,
-                physical_key: iced::keyboard::key::Physical::Unidentified(
-                    iced::keyboard::key::NativeCode::Unidentified,
-                ),
-                location: iced::keyboard::Location::Standard,
-                modifiers,
-                text: None,
-                repeat: false,
-            },
-        ))
+        Message::KeyPressed(iced::Event::Keyboard(iced::keyboard::Event::KeyPressed {
+            key: key.clone(),
+            modified_key: key,
+            physical_key: iced::keyboard::key::Physical::Unidentified(
+                iced::keyboard::key::NativeCode::Unidentified,
+            ),
+            location: iced::keyboard::Location::Standard,
+            modifiers,
+            text: None,
+            repeat: false,
+        }))
     }
 
     #[test]
     fn keyboard_shortcuts_toggle_log_and_recheck() {
         let (mut app, _) = App::new();
         let start = app.log_open;
-        let _ = app.update(key_press(
-            iced::keyboard::Key::Character("l".into()),
-            true,
-        ));
+        let _ = app.update(key_press(iced::keyboard::Key::Character("l".into()), true));
         assert_eq!(app.log_open, !start, "Ctrl+L must toggle the log");
-        let _ = app.update(key_press(
-            iced::keyboard::Key::Character("l".into()),
-            true,
-        ));
+        let _ = app.update(key_press(iced::keyboard::Key::Character("l".into()), true));
         assert_eq!(app.log_open, start, "Ctrl+L twice must restore it");
 
         // plain "l" without Ctrl must do nothing
-        let _ = app.update(key_press(
-            iced::keyboard::Key::Character("l".into()),
-            false,
-        ));
+        let _ = app.update(key_press(iced::keyboard::Key::Character("l".into()), false));
         assert_eq!(app.log_open, start);
 
         // F5 rechecks without crashing and leaves a log trail
@@ -2931,10 +3278,7 @@ mod ui_tests {
         let (mut app, _) = App::new();
         app.backups = vec!["KONAMI-backup-20270901-120000".to_string()];
         let home = std::env::var("HOME").unwrap_or_default();
-        let want = format!(
-            "{}/spfl27-backups/KONAMI-backup-20270901-120000",
-            home
-        );
+        let want = format!("{}/spfl27-backups/KONAMI-backup-20270901-120000", home);
         let _ = app.update(Message::PickRestore(want.clone()));
         assert_eq!(app.restore_path, want);
         assert_eq!(app.modal, Some(Modal::Restore));
@@ -2964,9 +3308,7 @@ mod ui_tests {
         let _ = app.update(Message::KeyPressed(iced::Event::Keyboard(
             iced::keyboard::Event::KeyPressed {
                 key: iced::keyboard::Key::Named(iced::keyboard::key::Named::Escape),
-                modified_key: iced::keyboard::Key::Named(
-                    iced::keyboard::key::Named::Escape,
-                ),
+                modified_key: iced::keyboard::Key::Named(iced::keyboard::key::Named::Escape),
                 physical_key: iced::keyboard::key::Physical::Unidentified(
                     iced::keyboard::key::NativeCode::Unidentified,
                 ),
@@ -2985,8 +3327,7 @@ mod ui_tests {
         // up with RAII so a panic mid-test cannot dirty the user config.
         let _cfg = ConfigBackup::take();
 
-        let root =
-            std::env::temp_dir().join(format!("spfl27-ui-find-{}", std::process::id()));
+        let root = std::env::temp_dir().join(format!("spfl27-ui-find-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&root);
         let game = root.join("SP Football Life 2027");
         std::fs::create_dir_all(&game).unwrap();
@@ -3020,7 +3361,10 @@ mod ui_tests {
         app.manual_path = root.join("does-not-exist").to_string_lossy().into_owned();
         let _ = app.update(Message::ApplyManualPath);
         assert!(app.game_dir.is_none());
-        assert!(app.logs.last().is_some_and(|l| l.contains("does not exist")));
+        assert!(app
+            .logs
+            .last()
+            .is_some_and(|l| l.contains("does not exist")));
 
         // 4. surrounding quotes are stripped before validation
         app.manual_path = format!("\"{}\" ", empty.display());
@@ -3061,7 +3405,10 @@ mod ui_tests {
         // 8. empty search keeps the step and explains what to do
         let _ = app2.update(Message::ScanDone(vec![]));
         assert!(app2.candidates.is_empty());
-        assert!(app2.logs.last().is_some_and(|l| l.contains("no game found")));
+        assert!(app2
+            .logs
+            .last()
+            .is_some_and(|l| l.contains("no game found")));
 
         // 9. candidate pick adopts a valid folder
         let (mut app3, _) = App::new();

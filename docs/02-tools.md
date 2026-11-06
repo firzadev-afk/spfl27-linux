@@ -45,7 +45,8 @@ Built with Rust and iced. Pages:
 - **System** — dependency check. Green OK means present. Missing items install
   with one click through your distro's package manager (admin rights
   required). On Steam Deck, Lutris comes via Flatpak.
-- **Switcher** — Gameplay, Controller, Classic Teams (see above).
+- **Switcher** — the easiest and safest way to open the game's FL27
+  Switcher, where you can change gameplay, controller icons and team modes.
 - **Settings** — same options as Settings.exe. First change makes an automatic
   backup of the settings file (`settings.dat`).
 - **Saves** — one-click timestamped backups of the game's save folder

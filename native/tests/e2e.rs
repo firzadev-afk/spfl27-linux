@@ -31,6 +31,7 @@ fn build(root: &Path) -> Fake {
     fs::write(game.join("FL_2027.exe"), b"fake").unwrap();
     fs::write(game.join("SiderAddons/sider.exe"), b"fake").unwrap();
     fs::write(game.join("SiderAddons/modules/aspectratio.lua"), b"-- fake").unwrap();
+    fs::write(game.join(SWITCHER_EXE), b"fake").unwrap();
     // bundled game switcher: GP + Controller + Classics
     for (idx, sm) in SWITCH_MAP.iter().enumerate() {
         let (sub, fname) = (sm.1, sm.3);
@@ -201,4 +202,14 @@ fn e2e_launch_cmd_menunjuk_ke_exe_benar() {
     fs::write(f.game.join("FL 2027 start.exe"), b"x").unwrap();
     let cmd2 = build_launch_cmd(&f.game);
     assert!(cmd2[1].ends_with("FL 2027 start.exe"), "{cmd2:?}");
+}
+
+#[test]
+fn e2e_switcher_command_points_to_game_tool() {
+    let root = tmp("switcher-cmd");
+    let f = build(&root);
+    let cmd = build_switcher_cmd(&f.game);
+    assert!(cmd[0].ends_with("wine"), "{cmd:?}");
+    assert!(cmd[1].ends_with(SWITCHER_EXE), "{cmd:?}");
+    assert!(f.game.join(SWITCHER_EXE).is_file());
 }
