@@ -8,7 +8,8 @@
 //!   * text contrast meets WCAG AA (checked in `tests::contrast_ratios`)
 
 use iced::widget::{button, text_input};
-use iced::{Background, Border, Color, Shadow, Theme};
+use iced::{Background, Border, Color, Degrees, Gradient, Radians, Shadow, Theme};
+use iced::gradient::Linear;
 
 pub mod space {
     //! 4px-based spacing scale.
@@ -142,18 +143,39 @@ const fn rgb(r: u8, g: u8, b: u8) -> Color {
     Color::from_rgb8(r, g, b)
 }
 
+const fn rgba(r: u8, g: u8, b: u8, a: f32) -> Color {
+    Color::from_rgba8(r, g, b, a)
+}
+
+/// Subtle background gradient — the canvas the glass panels float on.
+pub fn canvas_gradient(dark: bool) -> Background {
+    if dark {
+        Background::Gradient(Gradient::Linear(
+            Linear::new(Radians::from(Degrees::from(135.0)))
+                .add_stop(0.0, rgb(0x10, 0x14, 0x1b))
+                .add_stop(1.0, rgb(0x17, 0x1c, 0x26)),
+        ))
+    } else {
+        Background::Gradient(Gradient::Linear(
+            Linear::new(Radians::from(Degrees::from(135.0)))
+                .add_stop(0.0, rgb(0xF6, 0xF7, 0xF9))
+                .add_stop(1.0, rgb(0xED, 0xF0, 0xF5)),
+        ))
+    }
+}
+
 pub fn tokens(mode: Mode) -> Tokens {
     match mode {
         // Neutral canvas with a bright green accent. Green takes dark text so
         // the button clears AA (8.4:1) — white on green would only reach 2.4:1.
         Mode::Dark => Tokens {
             bg: rgb(0x0F, 0x11, 0x15),
-            surface: rgb(0x17, 0x1A, 0x20),
-            surface_2: rgb(0x1E, 0x23, 0x2B),
-            surface_3: rgb(0x26, 0x2C, 0x36),
-            surface_4: rgb(0x2F, 0x37, 0x43),
-            border: rgb(0x27, 0x2D, 0x37),
-            border_strong: rgb(0x39, 0x41, 0x4E),
+            surface: rgba(0x17, 0x1A, 0x20, 0.62),
+            surface_2: rgba(0x1E, 0x23, 0x2B, 0.74),
+            surface_3: rgba(0x26, 0x2C, 0x36, 0.82),
+            surface_4: rgba(0x2F, 0x37, 0x43, 0.90),
+            border: Color::from_rgba(1.0, 1.0, 1.0, 0.10),
+            border_strong: Color::from_rgba(1.0, 1.0, 1.0, 0.20),
             text: rgb(0xE8, 0xEC, 0xF2),
             text_muted: rgb(0x9A, 0xA5, 0xB4),
             text_faint: rgb(0x6B, 0x76, 0x84),
@@ -171,12 +193,12 @@ pub fn tokens(mode: Mode) -> Tokens {
         // On light canvas the accent deepens so white text still clears AA (5:1).
         Mode::Light => Tokens {
             bg: rgb(0xF6, 0xF7, 0xF9),
-            surface: rgb(0xFF, 0xFF, 0xFF),
-            surface_2: rgb(0xF0, 0xF2, 0xF5),
-            surface_3: rgb(0xE7, 0xEA, 0xEF),
-            surface_4: rgb(0xDD, 0xE1, 0xE8),
-            border: rgb(0xE2, 0xE6, 0xEC),
-            border_strong: rgb(0xC5, 0xCD, 0xD8),
+            surface: rgba(0xFF, 0xFF, 0xFF, 0.64),
+            surface_2: rgba(0xF0, 0xF2, 0xF5, 0.80),
+            surface_3: rgba(0xE7, 0xEA, 0xEF, 0.89),
+            surface_4: rgba(0xDD, 0xE1, 0xE8, 0.96),
+            border: Color::from_rgba(1.0, 1.0, 1.0, 0.55),
+            border_strong: rgba(0x15, 0x1A, 0x21, 0.24),
             text: rgb(0x15, 0x1A, 0x21),
             text_muted: rgb(0x5C, 0x66, 0x73),
             text_faint: rgb(0x84, 0x8D, 0x9A),
@@ -261,8 +283,13 @@ pub fn card_style_with(
 ) -> impl Fn(&Theme) -> iced::widget::container::Style {
     move |_t: &Theme| {
         let c = tok(dark);
+        let glass = Background::Gradient(Gradient::Linear(
+            Linear::new(Radians::from(Degrees::from(135.0)))
+                .add_stop(0.0, c.surface_2)
+                .add_stop(1.0, c.surface),
+        ));
         iced::widget::container::Style {
-            background: Some(Background::Color(c.surface)),
+            background: Some(glass),
             border: Border {
                 radius: radius::LG.into(),
                 width: 1.0,

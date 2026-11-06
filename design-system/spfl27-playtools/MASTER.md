@@ -8,8 +8,10 @@ Lives next to the project so future polish passes can stay consistent.
 - Product: SP Football Life 2027 for Linux and Steam Deck — Playtools (setup + launcher + tools).
 - Surface mode: Operate (a tool people use, not a showcase).
 - Audience: Windows/PC football-game players on Linux; many are beginners; must work on Steam Deck.
-- Style lock: **none**. The look is a custom light/dark token set in `native/src/theme.rs`
-  (no external design system). Any future style decision must be recorded here first.
+- Style lock: **glassmorphism** (Operate mode). Translucent panels (0.62–0.96
+  opacity) over a soft gradient canvas; light 1px borders; subtle outer shadow.
+  iced 0.14 has no backdrop blur, so blur is approximated by gradients and
+  translucency; text contrast is unchanged (tokens measured by the WCAG test).
 - Type/palette: keep the token roles in `native/src/theme.rs`; no invented colours per page.
 
 ## Dials
@@ -17,6 +19,15 @@ Lives next to the project so future polish passes can stay consistent.
 - density: 7 (was effectively ~9 before the 2026-11-06 pass; lowered)
 - motion: 2 (functional only)
 - variance: 3
+
+## 2026-11-06 glass pass
+
+- Canvas shell paints a subtle gradient (dark + light).
+- Cards are translucent gradient panels (surface-2 → surface).
+- Sidebar and setup top bar use translucent surfaces over the gradient.
+- Borders switch to translucent white (dark) / white + dark ring (light).
+- All tokens pass the WCAG AA contrast test; 31 + 20 + 8 tests green;
+  clippy shows only pre-existing warnings; release build verified.
 
 ## Critique history
 

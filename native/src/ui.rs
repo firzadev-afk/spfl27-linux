@@ -1482,7 +1482,15 @@ impl App {
         sidebar: iced::Element<'a, Message>,
         main: Column<'a, Message>,
     ) -> iced::Element<'a, Message> {
-        row![sidebar, main].into()
+        let dark = self.mode == Mode::Dark;
+        container(row![sidebar, main])
+            .width(Length::Fill)
+            .height(Length::Fill)
+            .style(move |_t: &iced::Theme| iced::widget::container::Style {
+                background: Some(theme::canvas_gradient(dark)),
+                ..iced::widget::container::Style::default()
+            })
+            .into()
     }
 
     /// Centre the page and cap its width so text never runs edge to edge.
@@ -1572,7 +1580,7 @@ impl App {
             .width(space::SIDEBAR)
             .height(Length::Fill)
             .style(move |_t: &iced::Theme| iced::widget::container::Style {
-                background: Some(iced::Background::Color(theme::tok(dark).bg)),
+                background: Some(iced::Background::Color(theme::tok(dark).surface)),
                 border: iced::Border {
                     radius: 0.0.into(),
                     width: 0.0,
