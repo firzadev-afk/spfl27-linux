@@ -103,7 +103,9 @@ The installer does, in order:
   Set VSync to `Enable1` to cap 60 fps and reduce heat.
 - **Switcher:** menu entry `FL27 Switcher` — gameplay, controller buttons, classic
   teams, lockdown, replay logo.
-- **Stop a stuck game:** `spfl2027-stop` (or Ctrl+C in the launcher terminal).
+- **Stop a stuck game:** the desktop launcher cleans up automatically once
+  the game window is gone (30 s grace). If anything remains, run
+  `spfl2027-stop` (or Ctrl+C in the launcher terminal).
 - **Health check:** `./lutris/spfl2027-fix.sh check` (exit 0 = healthy).
 - **Test notes:** `TEST_NOTES.md` (OS, device, settings, FPS, temperature).
 

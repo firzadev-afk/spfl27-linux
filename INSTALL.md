@@ -111,8 +111,12 @@ The script also reads the prefix from Lutris config files and scans
 Or launch from Lutris, or run `FL 2027 start.exe` / `FL_2027.bat` from the game
 folder inside the prefix.
 
-Sider starts first, then the game. Only the game window opens. If the game does
-not exit when its window is closed, press Ctrl+C in the launcher terminal, or
+Sider starts first, then the game. Only the game window opens. The game does
+not exit when its window is closed: Sider exits, but `FL_2027.exe` keeps
+running in the background. The desktop launcher waits for that (Sider gone,
+game still alive), gives the game 30 s to quit on its own, then force-closes
+the whole prefix — nothing is left behind. If anything remains (for example
+after launching from a terminal), press Ctrl+C in the launcher terminal, or
 run:
 
 ```bash
@@ -139,8 +143,9 @@ Neither tool starts the game.
   for manual Wine runs, install DXVK into the prefix.
 - **Controller not detected**: ensure `ddraw.dll` exists (renamed from
   `xinput1_3.dll`).
-- **Game does not exit when window is closed**: press Ctrl+C in the launcher
-  terminal or run `spfl2027-stop`.
+- **Game does not exit when window is closed**: the desktop launcher cleans
+  up automatically once the game window is gone (30 s grace). From a terminal,
+  press Ctrl+C, or run `spfl2027-stop`.
 - **High CPU / heat**: set VSync to `Enable1`, lower in-game graphics (crowd,
   shadows, anti-aliasing), ensure good cooling.
 
