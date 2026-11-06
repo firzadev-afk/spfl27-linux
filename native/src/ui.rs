@@ -868,7 +868,10 @@ impl App {
             }
             Message::OpenSwitcher => {
                 let Some(g) = self.game_dir.clone() else {
-                    self.toast(ToastKind::Error, "Select the game folder first (Home page).");
+                    self.toast(
+                        ToastKind::Error,
+                        "Select the game folder first (Home page).",
+                    );
                     return Task::none();
                 };
                 let switcher = g.join(SWITCHER_EXE);
@@ -905,7 +908,10 @@ impl App {
             }
             Message::OpenSettings => {
                 let Some(g) = self.game_dir.clone() else {
-                    self.toast(ToastKind::Error, "Select the game folder first (Home page).");
+                    self.toast(
+                        ToastKind::Error,
+                        "Select the game folder first (Home page).",
+                    );
                     return Task::none();
                 };
                 let settings = g.join(SETTINGS_EXE);
@@ -923,11 +929,14 @@ impl App {
                             let _ = tx.unbounded_send(Message::Log("Opened FL27 Settings.".into()));
                             let _ = tx.unbounded_send(Message::ShowToast(
                                 ToastKind::Success,
-                                "FL27 Settings opened. Change settings, then save and close.".into(),
+                                "FL27 Settings opened. Change settings, then save and close."
+                                    .into(),
                             ));
                         }
                         Err(e) => {
-                            let _ = tx.unbounded_send(Message::Log(format!("Could not open FL27 Settings: {e}")));
+                            let _ = tx.unbounded_send(Message::Log(format!(
+                                "Could not open FL27 Settings: {e}"
+                            )));
                             let _ = tx.unbounded_send(Message::ShowToast(
                                 ToastKind::Error,
                                 format!("Could not open FL27 Settings: {e}"),
@@ -2009,8 +2018,16 @@ impl App {
 
                 for (key, label, target) in [
                     ("GP", "Gameplay pack", "Replaces the gameplay data file."),
-                    ("Controller", "Controller icons", "Replaces the controller button-icon file."),
-                    ("Classics", "Classic career modes", "Replaces the classic-team data file."),
+                    (
+                        "Controller",
+                        "Controller icons",
+                        "Replaces the controller button-icon file.",
+                    ),
+                    (
+                        "Classics",
+                        "Classic career modes",
+                        "Replaces the classic-team data file.",
+                    ),
                 ] {
                     let opts: Vec<String> = self
                         .sw_opts
@@ -2025,22 +2042,26 @@ impl App {
                         .map(|(_, c)| c.clone())
                         .filter(|c| !c.is_empty());
 
-                    card = card.push(column![
-                        text(label).size(tsize::BODY_LG),
-                        sub(target, dark),
-                        if opts.is_empty() {
-                            sub("No options found in the game folder.", dark)
-                        } else {
-                            container(
-                                pick_list(opts, cur, move |c: String| Message::SwitcherPick(key, c))
+                    card = card.push(
+                        column![
+                            text(label).size(tsize::BODY_LG),
+                            sub(target, dark),
+                            if opts.is_empty() {
+                                sub("No options found in the game folder.", dark)
+                            } else {
+                                container(
+                                    pick_list(opts, cur, move |c: String| {
+                                        Message::SwitcherPick(key, c)
+                                    })
                                     .placeholder("Choose an option")
                                     .width(Length::Fill),
-                            )
-                            .width(Length::Fill)
-                            .into()
-                        },
-                    ]
-                    .spacing(space::XS));
+                                )
+                                .width(Length::Fill)
+                                .into()
+                            },
+                        ]
+                        .spacing(space::XS),
+                    );
                 }
 
                 card = card.push(
@@ -2060,7 +2081,10 @@ impl App {
                     dark,
                 ));
                 card = card.push(sub(
-                    format!("Content-pack folder: {}", short_path(&src.to_string_lossy(), 72)),
+                    format!(
+                        "Content-pack folder: {}",
+                        short_path(&src.to_string_lossy(), 72)
+                    ),
                     dark,
                 ));
 
@@ -2440,7 +2464,7 @@ impl App {
             border: iced::Border {
                 radius: theme::radius::MD.into(),
                 width: 1.0,
-                color: color,
+                color,
             },
             text_color: None,
             shadow: iced::Shadow {

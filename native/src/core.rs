@@ -966,25 +966,22 @@ pub fn launch_game(game_dir: &Path) -> Res<()> {
     if sider.is_file() {
         let w = wine.to_string_lossy().into_owned();
         let sd = sider.to_string_lossy().into_owned();
-        match Command::new(&w)
+        if let Ok(child) = Command::new(&w)
             .arg(&sd)
             .current_dir(game_dir)
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .spawn()
         {
-            Ok(child) => {
-                sider_child = Some(child);
-                for _ in 0..30 {
-                    if applog.exists() {
-                        break;
-                    }
-                    std::thread::sleep(std::time::Duration::from_secs(1));
+            sider_child = Some(child);
+            for _ in 0..30 {
+                if applog.exists() {
+                    break;
                 }
-                std::thread::sleep(std::time::Duration::from_secs(2));
-                sider_ok = applog.exists();
+                std::thread::sleep(std::time::Duration::from_secs(1));
             }
-            Err(_) => {}
+            std::thread::sleep(std::time::Duration::from_secs(2));
+            sider_ok = applog.exists();
         }
     }
 

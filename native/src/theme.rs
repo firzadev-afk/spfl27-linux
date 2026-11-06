@@ -314,7 +314,11 @@ pub fn btn_ghost(dark: bool) -> impl Fn(&Theme, button::Status) -> button::Style
         button::Style {
             background: Some(Background::Color(bg)),
             text_color: fg,
-            border: Border { radius: radius::MD.into(), width: 1.0, color: bd },
+            border: Border {
+                radius: radius::MD.into(),
+                width: 1.0,
+                color: bd,
+            },
             shadow: Shadow::default(),
             snap: true,
         }
@@ -358,7 +362,10 @@ pub fn input_style(dark: bool) -> impl Fn(&Theme, text_input::Status) -> text_in
         let (bg, border) = if let text_input::Status::Disabled = status {
             (c.surface_2, c.border)
         } else if focused
-            || matches!(status, text_input::Status::Active | text_input::Status::Hovered)
+            || matches!(
+                status,
+                text_input::Status::Active | text_input::Status::Hovered
+            )
         {
             (c.surface, c.border_strong)
         } else {
@@ -366,7 +373,11 @@ pub fn input_style(dark: bool) -> impl Fn(&Theme, text_input::Status) -> text_in
         };
         text_input::Style {
             background: Background::Color(bg),
-            border: Border { radius: radius::MD.into(), width: 1.0, color: border },
+            border: Border {
+                radius: radius::MD.into(),
+                width: 1.0,
+                color: border,
+            },
             icon: c.text_faint,
             placeholder: c.text_faint,
             value: c.text,
@@ -449,7 +460,11 @@ pub fn chip_style(dark: bool) -> impl Fn(&Theme) -> iced::widget::container::Sty
         let c = tok(dark);
         iced::widget::container::Style {
             background: Some(Background::Color(c.surface_2)),
-            border: Border { radius: radius::SM.into(), width: 1.0, color: c.border },
+            border: Border {
+                radius: radius::SM.into(),
+                width: 1.0,
+                color: c.border,
+            },
             text_color: None,
             shadow: Shadow::default(),
             snap: true,
@@ -461,7 +476,11 @@ pub fn chip_style(dark: bool) -> impl Fn(&Theme) -> iced::widget::container::Sty
 pub fn pill_style(bg: Color, border: Color) -> impl Fn(&Theme) -> iced::widget::container::Style {
     move |_t: &Theme| iced::widget::container::Style {
         background: Some(Background::Color(bg)),
-        border: Border { radius: radius::PILL.into(), width: 1.0, color: border },
+        border: Border {
+            radius: radius::PILL.into(),
+            width: 1.0,
+            color: border,
+        },
         text_color: None,
         shadow: Shadow::default(),
         snap: true,
@@ -503,15 +522,27 @@ mod tests {
     #[test]
     fn scale_values_are_unique_and_ordered() {
         let sizes = [
-            text::MICRO, text::SMALL, text::BODY, text::BODY_LG,
-            text::H3, text::H2, text::H1, text::DISPLAY,
+            text::MICRO,
+            text::SMALL,
+            text::BODY,
+            text::BODY_LG,
+            text::H3,
+            text::H2,
+            text::H1,
+            text::DISPLAY,
         ];
         for w in sizes.windows(2) {
             assert!(w[0] < w[1], "type scale not strictly increasing: {w:?}");
         }
         let sp = [
-            space::XXS, space::XS, space::SM, space::MD, space::LG,
-            space::XXL, space::XXXL, space::HUGE,
+            space::XXS,
+            space::XS,
+            space::SM,
+            space::MD,
+            space::LG,
+            space::XXL,
+            space::XXXL,
+            space::HUGE,
         ];
         for w in sp.windows(2) {
             assert!(w[0] < w[1], "spacing scale not strictly increasing: {w:?}");
