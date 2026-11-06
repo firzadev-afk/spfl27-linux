@@ -1413,7 +1413,10 @@ fn dir_check_list(dir: &std::path::Path, skip: usize, dark: bool) -> Column<'sta
 fn candidate_row(c: PathBuf, in_use: bool, dark: bool) -> iced::Element<'static, Message> {
     container(
         row![
-            icon(if in_use { "check-circle" } else { "hard-drive" }, 15.0),
+            icon(
+                if in_use { "check-circle" } else { "hard-drive" },
+                isize::SM
+            ),
             text(c.to_string_lossy().into_owned()).size(tsize::SMALL),
             iced::widget::Space::new().width(Length::Fill),
             if in_use {
