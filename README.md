@@ -33,13 +33,13 @@ The game actually running on Linux (Football Life 2027 main menu):
 
 ## What you need (prerequisites)
 
-| Component | Minimum | Check command |
-|-----------|---------|---------------|
-| Rust | 1.88 | `rustc --version` |
-| Lutris | 0.5.20 | `lutris --version` |
-| Wine | 10.0 | `wine --version` |
-| Winetricks | any | `winetricks --version` |
-| Vulkan drivers | any | `vulkaninfo --summary` (optional) |
+| Component | Minimum | Needed for | Check command |
+|-----------|---------|------------|---------------|
+| Lutris | 0.5.20 | game install | `lutris --version` |
+| Wine | 10.0 | game install and tools | `wine --version` |
+| Winetricks | any | game install | `winetricks --version` |
+| Rust | 1.88 | optional Playtools app only | `rustc --version` |
+| Vulkan drivers | any | optional graphics check | `vulkaninfo --summary` (optional) |
 
 Arch/CachyOS one-liner:
 
@@ -51,13 +51,45 @@ sudo pacman -S rust lutris wine winetricks vulkan-tools
 
 Before installing, verify:
 
-1. `rustc --version` prints 1.88 or newer.
-2. `lutris --version` prints 0.5.20 or newer.
-3. `wine --version` prints 10.0 or newer.
-4. `winetricks --version` works.
-5. You have the two SmokePatch files: `SPFL27_setup.exe` and the latest update.
-6. At least 80 GB of free space on the target disk (game ~23 GB + facepacks ~42 GB).
-7. The target disk is mounted and writable.
+1. `lutris --version` prints 0.5.20 or newer.
+2. `wine --version` prints 10.0 or newer.
+3. `winetricks --version` works.
+4. You have the two SmokePatch files: `SPFL27_setup.exe` and the latest update.
+5. At least 80 GB of free space on the target disk (game ~23 GB + facepacks ~42 GB).
+6. The target disk is mounted and writable.
+7. `rustc --version` prints 1.88 or newer only if you also want the optional
+   Playtools app.
+
+Rust is optional. The game itself is installed and repaired with plain shell
+scripts and Lutris.
+
+## Choose your setup
+
+**Game install only (no Rust needed)**
+
+Use this if you only want to install and play the game:
+
+```bash
+lutris -i lutris/sp-football-life-2027.yaml
+./lutris/spfl2027-fix.sh check
+```
+
+Launch from the COSMIC/Lutris menu entry `SP Football Life 2027`, or run
+`~/.local/bin/spfl2027` if you created that launcher. The Windows tools have
+their own menu entries: `FL27 Settings` and `FL27 Switcher`.
+
+**Optional Playtools app (needs Rust)**
+
+Use this if you want the native setup wizard, dependency checks, game
+launcher, save backups, and the simplified Settings/Switcher pages:
+
+```bash
+cd native && cargo build --release
+./native/run.sh
+```
+
+Both setups use the same Lutris installer and repair scripts. The Playtools
+app is a helper around them, not a replacement for the install.
 
 ## Layout
 
@@ -67,16 +99,20 @@ Before installing, verify:
 - `data/cpk/` — `Classics/`, `Controller/{ps3,ps4,ps5,xbox}/`, `GP/`
   (empty placeholders — real CPKs are downloaded separately and not committed)
 
-## Build and test (Playtools app)
+## Build and test (Playtools app, optional)
 
 ```bash
 cd native && cargo build --release     # build the spfl27 app
 ./native/run.sh                        # build if stale, then run
-cd native && cargo test                 # run the e2e suite (31 + 19 + 5 tests)
-cd native && cargo clippy --all-targets # lint (6 pre-existing style warnings)
+cd native && cargo test                 # run the e2e suite
+cd native && cargo clippy --all-targets # lint (pre-existing style warnings)
 ```
 
-## Install the game
+## Install the game (shell/Lutris path)
+
+This is the path that does not need Rust. It creates the Wine prefix,
+installs the Windows dependencies, runs the SmokePatch installer, and writes
+`FL_2027.bat`.
 
 ```bash
 lutris -i lutris/sp-football-life-2027.yaml
@@ -96,6 +132,10 @@ The installer does, in order:
 10. Write `FL_2027.bat`.
 
 ## How to use
+
+With the Playtools app, use its Home page and press **PLAY**. Without it,
+use the menu entries below; both clean up leftover game processes after the
+window closes.
 
 - **Play:** menu entry `SP Football Life 2027` (or `~/.local/bin/spfl2027`).
   Sider starts first, then the game. Only the game window opens.
