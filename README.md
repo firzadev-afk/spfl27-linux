@@ -94,8 +94,9 @@ app is a helper around them, not a replacement for the install.
 ## Layout
 
 - `native/` — Rust app `spfl27` (`src/`, `tests/e2e.rs`, `assets/`, `run.sh`)
-- `lutris/` — `sp-football-life-2027.yaml` installer + `spfl2027-fix.sh` + `spfl2027-stop.sh`
+- `lutris/` — `sp-football-life-2027.yaml` installer + `spfl2027-fix.sh` + `spfl2027-var.sh` + `spfl2027-stop.sh`
 - `sider/modules/` — `aspectratio.lua`
+- `mods/offside-var/` — bundled Offside VAR mod (Sider + ReShade banner)
 - `data/cpk/` — `Classics/`, `Controller/{ps3,ps4,ps5,xbox}/`, `GP/`
   (empty placeholders — real CPKs are downloaded separately and not committed)
 
@@ -147,7 +148,26 @@ window closes.
   seconds after the game window is gone. If anything remains, run
   `spfl2027-stop` (or Ctrl+C in the launcher terminal).
 - **Health check:** `./lutris/spfl2027-fix.sh check` (exit 0 = healthy).
+- **VAR check:** `./lutris/spfl2027-var.sh check` (exit 0 = VAR installed).
+  Install with `./lutris/spfl2027-var.sh install` (uses `mods/offside-var/`).
 - **Test notes:** `TEST_NOTES.md` (OS, device, settings, FPS, temperature).
+
+## Offside VAR (optional)
+
+The VAR-style offside wall, camera, and banner are bundled in
+`mods/offside-var/` (see `mods/offside-var/README.md`). It needs Sider 7
+with LuaJIT plus `nesalib.lua` / `CommonLib.lua` (already in the game), and
+ReShade 6.x with full add-on support for the banner only.
+
+```bash
+./lutris/spfl2027-var.sh check
+./lutris/spfl2027-var.sh install
+# or: ./lutris/spfl2027-var.sh install --zip /path/to/FL27_Pes21_Offside_VAR_1.0-rc.zip
+```
+
+Then launch the game as usual. In the ReShade overlay (default Insert key),
+the `OffsideBanner` effect and the `offside_banner` add-on should both be
+visible. Remove the mod with `./lutris/spfl2027-var.sh remove`.
 
 ## Tool repair (Settings / Switcher)
 

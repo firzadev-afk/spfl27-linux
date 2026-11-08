@@ -132,6 +132,30 @@ spfl2027-stop
 
 Neither tool starts the game.
 
+## 8b. Offside VAR (optional)
+
+The VAR offside wall, camera sequence, and banner are optional and live in
+`mods/offside-var/`. Check and install them with:
+
+```bash
+./lutris/spfl2027-var.sh check
+./lutris/spfl2027-var.sh install
+# or: ./lutris/spfl2027-var.sh install --zip /path/to/FL27_Pes21_Offside_VAR_1.0-rc.zip
+```
+
+Sider already provides LuaJIT and `nesalib.lua` / `CommonLib.lua`. For the
+banner only you also need ReShade 6.x with full add-on support plus the
+standard ReShade shaders (`reshade-shaders/Shaders/ReShade.fxh`). Without
+ReShade the wall and camera still work; only the banner is missing.
+
+The installer copies the bundled mod into the game folder and adds
+`lua.module = "offside.lua"` after `lib\nesalib.lua` in `sider.ini`
+(backed up as `sider.ini.bak_var`). Remove the mod with:
+
+```bash
+./lutris/spfl2027-var.sh remove
+```
+
 ## 9. Troubleshooting
 
 - **Settings.exe crashes with `Unexpected number of bits: 0`**: Wine Mono is in
