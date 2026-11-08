@@ -2,12 +2,13 @@
 
 Installer and Playtools project for SP Football Life 2027 on Linux and Steam Deck.
 Native Rust launcher (`native/`), Lutris installer (`lutris/`), Sider Lua module
-(`sider/modules/`), and CPK content packs (`data/cpk/`).
+(`sider/modules/`), CPK content packs (`data/cpk/`), and bundled mods (`mods/`).
 
 ```text
 native/src/{main,lib,core,deps,ui,theme}.rs + tests/e2e.rs + assets/ + run.sh
-lutris/sp-football-life-2027.yaml + spfl2027-fix.sh + spfl2027-stop.sh
+lutris/sp-football-life-2027.yaml + spfl2027-fix.sh + spfl2027-var.sh + spfl2027-turf.sh + spfl2027-stop.sh
 sider/modules/aspectratio.lua
+mods/offside-var/  mods/turf-evolution/  (bundled third-party mods; see SOURCE.md)
 data/cpk/{Classics,Controller/{ps3,ps4,ps5,xbox},GP/}  (empty placeholders;
   real CPKs downloaded separately — not committed)
 README.md  INSTALL.md  AGENTS.md  TEST_NOTES.md

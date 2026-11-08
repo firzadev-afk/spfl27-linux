@@ -156,6 +156,28 @@ The installer copies the bundled mod into the game folder and adds
 ./lutris/spfl2027-var.sh remove
 ```
 
+## 8c. Turf Evolution (optional)
+
+The Ultra Graphics Turf mod (Turf Evolution v2.4 plus PitchCrew
+halftime repair) is bundled in `mods/turf-evolution/`. Check and
+install it with:
+
+```bash
+./lutris/spfl2027-turf.sh check
+./lutris/spfl2027-turf.sh install
+# or: ./lutris/spfl2027-turf.sh install --zip "/path/to/Ultra Graphics GfX  Best Turf 2026 FL27.rar"
+```
+
+Sider already provides LuaJIT, livecpk, and `match-stats.enabled = 1`
+(which PitchCrew needs). ReShade 6.x with full add-on support is only
+needed for the PitchCrew repair; the turf works without it. Settings
+live in `SiderAddons/content/turf-evolution/settings.ini` and apply
+after restarting both the game and Sider. Remove the mod with:
+
+```bash
+./lutris/spfl2027-turf.sh remove
+```
+
 ## 9. Troubleshooting
 
 - **Settings.exe crashes with `Unexpected number of bits: 0`**: Wine Mono is in

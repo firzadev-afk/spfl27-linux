@@ -94,9 +94,10 @@ app is a helper around them, not a replacement for the install.
 ## Layout
 
 - `native/` — Rust app `spfl27` (`src/`, `tests/e2e.rs`, `assets/`, `run.sh`)
-- `lutris/` — `sp-football-life-2027.yaml` installer + `spfl2027-fix.sh` + `spfl2027-var.sh` + `spfl2027-stop.sh`
+- `lutris/` — `sp-football-life-2027.yaml` installer + `spfl2027-fix.sh` + `spfl2027-var.sh` + `spfl2027-turf.sh` + `spfl2027-stop.sh`
 - `sider/modules/` — `aspectratio.lua`
 - `mods/offside-var/` — bundled Offside VAR mod (Sider + ReShade banner)
+- `mods/turf-evolution/` — bundled Ultra Graphics Turf mod (Sider + ReShade PitchCrew)
 - `data/cpk/` — `Classics/`, `Controller/{ps3,ps4,ps5,xbox}/`, `GP/`
   (empty placeholders — real CPKs are downloaded separately and not committed)
 
@@ -150,6 +151,8 @@ window closes.
 - **Health check:** `./lutris/spfl2027-fix.sh check` (exit 0 = healthy).
 - **VAR check:** `./lutris/spfl2027-var.sh check` (exit 0 = VAR installed).
   Install with `./lutris/spfl2027-var.sh install` (uses `mods/offside-var/`).
+- **Turf check:** `./lutris/spfl2027-turf.sh check` (exit 0 = Turf installed).
+  Install with `./lutris/spfl2027-turf.sh install` (uses `mods/turf-evolution/`).
 - **Test notes:** `TEST_NOTES.md` (OS, device, settings, FPS, temperature).
 
 ## Offside VAR (optional)
@@ -168,6 +171,24 @@ ReShade 6.x with full add-on support for the banner only.
 Then launch the game as usual. In the ReShade overlay (default Insert key),
 the `OffsideBanner` effect and the `offside_banner` add-on should both be
 visible. Remove the mod with `./lutris/spfl2027-var.sh remove`.
+
+## Turf Evolution (optional)
+
+The turf wear, clumps, and global grass mod is bundled in
+`mods/turf-evolution/` (see `mods/turf-evolution/README.md`). It needs
+Sider 7 with LuaJIT, livecpk, and `match-stats.enabled = 1` (PitchCrew),
+plus ReShade 6.x with full add-on support for the halftime repair only;
+the turf itself works without it.
+
+```bash
+./lutris/spfl2027-turf.sh check
+./lutris/spfl2027-turf.sh install
+# or: ./lutris/spfl2027-turf.sh install --zip "/path/to/Ultra Graphics GfX  Best Turf 2026 FL27.rar"
+```
+
+Then launch the game as usual. Check `sider.log` for `turf-evolution:`
+and `pitch_crew:` lines. Remove the mod with
+`./lutris/spfl2027-turf.sh remove`.
 
 ## Tool repair (Settings / Switcher)
 

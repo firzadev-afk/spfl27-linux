@@ -1,0 +1,1459 @@
+{
+  "files": [
+    {
+      "brown": 0,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 0,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 10,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 10,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 20,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 20,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 30,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 30,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 40,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 40,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 50,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 50,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 60,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 60,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 70,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 70,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 80,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 80,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 90,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 90,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 100,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2bdc2f163aab83b5ad53e7a0d22d9e252f98fea2caf98aa7b908432427f29c22"
+    },
+    {
+      "brown": 100,
+      "visibility": 0,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b112bae77c4095250218fa6b381d9791d6ce098174b18c1c96a275139ba25abe"
+    },
+    {
+      "brown": 0,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "3d576162a96d4615b1680b26890f934205a866bf3c856e927b3576e7559a0787"
+    },
+    {
+      "brown": 0,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "fe226b13bbd26aabad00ff96268fcebde81250f311fdc37aa3368d74d3b8c28a"
+    },
+    {
+      "brown": 10,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "5b7c84097db68fd58035a1fbebfd96b3f7103da93cf8352a048824f4d5f10e6f"
+    },
+    {
+      "brown": 10,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "12ff27957adc29054c740e47bbdbeef8041003dc9fefa0a7dd49770248d963ac"
+    },
+    {
+      "brown": 20,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "d2d16d532d194a4a9cd21a9aaef8bb721b7ff829529caf3e7a3361fd8e61a1e0"
+    },
+    {
+      "brown": 20,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "0636fc313b8fd3481e66946e2e50bcac706257b2213c6a27393ad71bd8f83c76"
+    },
+    {
+      "brown": 30,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "87602557197fdec8d97373e6de095b61fc978b4df76b0356a022488cb2387d10"
+    },
+    {
+      "brown": 30,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b45bfb60ae5a09c64c98685153cbff84d3c98b5f13c4848707760e809525d3de"
+    },
+    {
+      "brown": 40,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "06648c28e4c9ff3961e61a6e82f48ce278fe169baeabc3971786d0645f79f88f"
+    },
+    {
+      "brown": 40,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "7f72029e38de0255bb1f4503983307b7b368caf38ddaa5152afbcda2b1131d48"
+    },
+    {
+      "brown": 50,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "66abd88edaa09898ec8efeff882369ae9b49ce54725fd6f3341c6cac9f7918f2"
+    },
+    {
+      "brown": 50,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "e8e75dbc10124346fe1060cb01a1e50d4133c88a71550973d5530f9f589c4261"
+    },
+    {
+      "brown": 60,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "071317cf92e8a72dc6a7f6b6017a9b3b044698fb57768e6c452ba34564cadf30"
+    },
+    {
+      "brown": 60,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "98bf870952585d99110aaf70b1402d89c6bcff215fec2f4806f94e569119dcca"
+    },
+    {
+      "brown": 70,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "ba68e93e8db4687e3b0dd1de203b023b473b5a666ee4dd42e80293400237e28a"
+    },
+    {
+      "brown": 70,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "23f406d69bd7d8cf698250f5ff39502998fc9232b1a3e4b927b8a2c7055a43b5"
+    },
+    {
+      "brown": 80,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "ca3d1f91c25059330e00178324fd5437ef4faeb0ba3a9302e6b911945d8fbbb3"
+    },
+    {
+      "brown": 80,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "f6930e9aabd31c1c6de290ef893c7822f6800a2f902298c04f1b704b937b4298"
+    },
+    {
+      "brown": 90,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "275a75edf2f31bfa90ffc914e4dc7b95930180d1378dc8c4b9192e558f422c83"
+    },
+    {
+      "brown": 90,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "e8ae14f2261d00d0a551c8159e7d6cc11727c426f1e81ca209cd678d1dd61c19"
+    },
+    {
+      "brown": 100,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "d3d284eecf308725b087ccb246c2c4ab67a7c2d9e38220c9d9a12be80eddc194"
+    },
+    {
+      "brown": 100,
+      "visibility": 10,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "a6744b04c6c7d8539b64d4413cad52aa1f6633603dffb485db3cb8f94934dd87"
+    },
+    {
+      "brown": 0,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "a9f268a13c1d8b0d966f77cbb4504e4bbaaa1853d4a2ac1cbda2eb3da46627af"
+    },
+    {
+      "brown": 0,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "e14b628de28df3b690e31fa42a26cd157aa3215d9b804a45564cd9e97ce9a922"
+    },
+    {
+      "brown": 10,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "9ebdfe1815246f0b721591f4e02d3910fa22a2cfe42a4297f08295b30aee2387"
+    },
+    {
+      "brown": 10,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "597867dce3961da747c8033d96ad6cf64dff699fb94bb92873f6db55da07a87e"
+    },
+    {
+      "brown": 20,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "4932fe5d6e51bf1dbdbb4ed9b5065b1aeb180ed99245e213453ee280c235f617"
+    },
+    {
+      "brown": 20,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "1b336f512a1a5346a7b04c084a99f12d63c1ad3afdf7d3d32009b62cac851524"
+    },
+    {
+      "brown": 30,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "fa03fb75677ec0a7954d3697bb42720a4bc72c0cc0dd91be158c3988c15b5f76"
+    },
+    {
+      "brown": 30,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "4f6e82023f197e2b6e2a8704c3119d0d9a129ce0e91537e96012458a4252821b"
+    },
+    {
+      "brown": 40,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "e8f5eae0ccce325b386a7f1e93a92fcc47845d6ba61bde5edea21444da958988"
+    },
+    {
+      "brown": 40,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "9b9be00d3274b4cfaf80c3aa1464ac86741ec0eff12013bdfa504fb5735dce11"
+    },
+    {
+      "brown": 50,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "f052b4880a5ad33b28e9db50e520907d8428a8729ac7382fd3304c6be5946503"
+    },
+    {
+      "brown": 50,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "c6cf4cf6ad4528acca32dee8112af22b02e2451b26869370a1ad18d6106d72ba"
+    },
+    {
+      "brown": 60,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "f03ac7a5b99b827d6babd926cc7f15a27e1876a8f46ac88f91a97ed2058e4a13"
+    },
+    {
+      "brown": 60,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "6ee7ae6831924e702d0dad756fe68e262a84b606ce2aceb2aaff6620b54edc1e"
+    },
+    {
+      "brown": 70,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "865fe8a7bbfc9d4ad5dca002dff535cf61aafcfe6a986224c5dd008e9822f461"
+    },
+    {
+      "brown": 70,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "8401844d499cc87ae1c05cf80e2cbd80465cc309c337e90ab2b180280ebe058f"
+    },
+    {
+      "brown": 80,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "887e1500f12fa23bab9a0f27beef4f2f930fb08af6b848446e48419787a6c020"
+    },
+    {
+      "brown": 80,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "8fe04dc56780543c630bbd71becda570d2eda462dd1d270a1a57e60e7f457467"
+    },
+    {
+      "brown": 90,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "67b68618486812324b1099d5d8193fce590507b58844737eba3cf37597347408"
+    },
+    {
+      "brown": 90,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "121b8a9ca80a0190f1d0190dd3004e00cc883dd731254cf0ac44b51192eedca2"
+    },
+    {
+      "brown": 100,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "18d1d38c7f86ba7655a581d98cae62ea6b126960b3154e7ba392a3896c8cbaab"
+    },
+    {
+      "brown": 100,
+      "visibility": 20,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "67bb7e5e64bf363c4dd922a0254d3720e52dd104d9712fa1954bcd2f09cc69b8"
+    },
+    {
+      "brown": 0,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "675179bbab5289058f4262dcab917407b8e9a2f91cc438ef1d59776fef7f391d"
+    },
+    {
+      "brown": 0,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "a7fa9c40b08378c878ee9c9ba3a37008b46a65f948b19a804de3487bcb9babb2"
+    },
+    {
+      "brown": 10,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "19ce81a960c359064c4b5c8c71087f10ad4f378cb1ee5e007460afba5147496e"
+    },
+    {
+      "brown": 10,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "9104c57ca2c94d6ec29001d494f5150927bd22a50ff808d3c92a476630f2bcca"
+    },
+    {
+      "brown": 20,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "302a3994a26d659074e8dd12bb477439102c7e069e7fc243eb7e7438aa592ac3"
+    },
+    {
+      "brown": 20,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "792ebabfc12c5d2ddd2a4adb899f80b838bd6b7eb3a26fcd4e4a271339891d3f"
+    },
+    {
+      "brown": 30,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "c299798cc51e52c9ad05cf6232c2c06959f984a7dcc72be15d8a44b8fe5c5186"
+    },
+    {
+      "brown": 30,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "662fb96a2850bac6645eaa1663df46a3a4176587b992753e3c6f949814331dc6"
+    },
+    {
+      "brown": 40,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "7223c2464983b30c7325ab4d68edea318b39078ae78f69ac9df3706aa5716735"
+    },
+    {
+      "brown": 40,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "c5f58161c68459a1463035b391f433ab4525714e98d412cd8c4ae4ecaf68f677"
+    },
+    {
+      "brown": 50,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "71a0a209540750f0ac3712fdc2f9abe6d0d0679868b16ff1d4e4d39760f8fc35"
+    },
+    {
+      "brown": 50,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "bd9cd7f5a8c0e8ead40e90f90285293065a844db9612e2c64dec6582bf0240db"
+    },
+    {
+      "brown": 60,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "ff4258d47daf63879675bdc825256bf49f0f347e9ddce2f66c6b73ff9c3e139d"
+    },
+    {
+      "brown": 60,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "476be20c9502845d81490554b22a077f1304823ee340439f8c48d05d596f43c0"
+    },
+    {
+      "brown": 70,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2460e1990eefb542765b426c4bcf79e1294c4362443dc71ce3b05ae7ed5d9f3f"
+    },
+    {
+      "brown": 70,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "533a5e7908aaa0e48ed28128bb823d37f7ea2f85ce7a3f6a5f2734f93d46ae54"
+    },
+    {
+      "brown": 80,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "61ad7edadd1cef1d056d64bdeca2600ea8d0a073a799b28a6cccb1f9e461661f"
+    },
+    {
+      "brown": 80,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "9fb6b31bffcd2e77241023fa2dbcdfb3db5a8195cc8cecf1c6b74969af481dec"
+    },
+    {
+      "brown": 90,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2df6652ca4e7af1d1dd7370bf29b938c84c0f586a2fa0d231f763b34af9a565e"
+    },
+    {
+      "brown": 90,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "992b3589c393088839c3273e61a58dce7c7c7cc0c2166ce49411441eebbb310b"
+    },
+    {
+      "brown": 100,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "cffef1158badf40884ef6e33f8d181d857324b370e79565d87f884baffe7d7f3"
+    },
+    {
+      "brown": 100,
+      "visibility": 30,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "253e1cfc11f5bbe5bd083cf53139b7e9f4f2e0c5a662ee3033df769f8d13ad13"
+    },
+    {
+      "brown": 0,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "c7a26cf260bb12bb7b4afcd02f2f0f30e6955b265ac2db5b19490977f20cbd0e"
+    },
+    {
+      "brown": 0,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "e6b69283fbb1d7f370ec44c2ba9bdd2978a20b17eb3862cbb6a7d4d511909d7b"
+    },
+    {
+      "brown": 10,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "42d869d108a36c2aa808dfb5dea871afb3b90d8532926f564c8a380a262d0793"
+    },
+    {
+      "brown": 10,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "33219efdb81e34897dd5d18483d2aadd5c16c058125f48f6c4f48b22474441cc"
+    },
+    {
+      "brown": 20,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "c16affd7389bb229c86d362dc57179e4128fb909180a57bedc62ad2a2d5c8017"
+    },
+    {
+      "brown": 20,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "3c7ef8cbd5e43d027f2a5fa711a0dbd9a0b6aa9a1766a4317949c13722bb696a"
+    },
+    {
+      "brown": 30,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "87e756d69d2d7b8d6e0282e2476a1e978228ed80b36cefcd24708ffeb65622e3"
+    },
+    {
+      "brown": 30,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b36126b42b60f759e40e38692e8398c569ff17ac2c7c348440ab9d4d7865887e"
+    },
+    {
+      "brown": 40,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "c6af4fbcc12aa2b4bc8d31a1148c811cdb9534281539073509a5f6995a5b7dd1"
+    },
+    {
+      "brown": 40,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "2896c32ff52effb358fffcf6d7b3f9f817b45956ba4b612182cdc8d2591d3629"
+    },
+    {
+      "brown": 50,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "0cba82fe04ccb7564881eea1b29e871380de4dd50fb6d74033aae09071984654"
+    },
+    {
+      "brown": 50,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "46866ae0db18ef9937244c8068b5eaa7f3486cf4a49ae278105e334bb6563dab"
+    },
+    {
+      "brown": 60,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "6aadeb1113cb380d33bd0f01f6b7c9ad73d1bf08eb07e91db3b98a6140812c26"
+    },
+    {
+      "brown": 60,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "38f9a4f5399f124a0243e0e2369092ed510334d42e7dcd786be7c82a38d25528"
+    },
+    {
+      "brown": 70,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "528ca50491f09660e432a594bbdb3e895bf0935e2ca307ebb955a2727c74afe5"
+    },
+    {
+      "brown": 70,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "492a97273da2a71526bdd3b28375f267316a2f917f27d5a1c9bc303a48b3d1e9"
+    },
+    {
+      "brown": 80,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "811b9d75c9747effe27132e95f38debc04c3e20653d3a3afcab81ca2c1f1c7b8"
+    },
+    {
+      "brown": 80,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "81a657f215b1a2956f2c701341ded1355aefe1cd31cd9cb381e637c1ed0fb501"
+    },
+    {
+      "brown": 90,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2152b6533633bdddf2abe84c717cb0ee3eb2f41a00fb14806c5c9b5f3b85886e"
+    },
+    {
+      "brown": 90,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "89457d429d98fd9f486d7ff410a3fe085ff73dd926142cb750eafbbb4f0c6eb4"
+    },
+    {
+      "brown": 100,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "aa467b5574217dd35a6fa1e828ac2b11246d7904a66342446a43a36d1b8b6ad8"
+    },
+    {
+      "brown": 100,
+      "visibility": 40,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "1bdac53ff9858b3977135cb6ee976fce98ded263e22c4e580a7597d90de15ce2"
+    },
+    {
+      "brown": 0,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "9e8b8f99f49f9ee2a90f8e26c5e49d264230deed6f9cf074b0f84903d4d25e07"
+    },
+    {
+      "brown": 0,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "6ceab5d84aa841e3d5a26e66bd18f1dfefb691100164764f58f3361dba105855"
+    },
+    {
+      "brown": 10,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "58b11b9793cb3e22fe17efbcdb73a2a5af798506a5d91b40fd93bffea6df40e4"
+    },
+    {
+      "brown": 10,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "3fbc5eb300f5239b34eb57415473dff12f22420e5a6c83fe956ea6ecff512504"
+    },
+    {
+      "brown": 20,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "ffda8ba30a8b8c2e3997492e885bfd51ee343b24682bc1bb0ef3d0f6a9ae6847"
+    },
+    {
+      "brown": 20,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "6830b939773bebdf58dd25eb985d884dacbe0f898ee28e51fb4af4b31cd45cc1"
+    },
+    {
+      "brown": 30,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "eb4ab8e07500a15f15726fa0719fe03889616f704018cd4ba9f892429f84ce21"
+    },
+    {
+      "brown": 30,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "d90f8415617224e0eaf9cfa3a2538d600d23fa6b5a9e7bdf9f6c479c52d58897"
+    },
+    {
+      "brown": 40,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "5548d60a116cac82821310c69f29033a8ec6a56109a187bba7e56760d1923e4f"
+    },
+    {
+      "brown": 40,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "8d470f74c424877eaae946b7578d6af633f9b0d24087926155b93fdb5b46fc3e"
+    },
+    {
+      "brown": 50,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "82723ec7716ad0f6fd825e3fc8cde068f4968182d94c0dab6153487fbadeae3d"
+    },
+    {
+      "brown": 50,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "a5df425d98d39001ed55dfe9844ab31b3496ee5f0ae752c728060ca3d7c4ec03"
+    },
+    {
+      "brown": 60,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "51d121df93054e64ad69411d6eb8b3b67770bd04d53f692e4df7d19e1d01bdf8"
+    },
+    {
+      "brown": 60,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "eb8d32cc697acc66ee27c828942a452c867bc15651421a8b383517ae3fde3d73"
+    },
+    {
+      "brown": 70,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "994114725b088f0125070a68147258dc8ad140916298533f4972c92be07aaeef"
+    },
+    {
+      "brown": 70,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "a7b04e0538a1183a860a6c91380c1d808370ab9117362c3c992ab5afc11fbdeb"
+    },
+    {
+      "brown": 80,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "a429465cb7f6920e64d8c51e2c633bcddab81be09e06383148eeb2337c0e02d5"
+    },
+    {
+      "brown": 80,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "f31c4863c0762b51c504a57d6257f38cf29094e2cd9b29beba2fdf55d5350f07"
+    },
+    {
+      "brown": 90,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "545cfa96bdb77a9865e378fc12349e81eaafddb0ac0957f84e3b2e06c6ec8a16"
+    },
+    {
+      "brown": 90,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "a3eaecc09225467968866322fe3e8b5f380ca597e4ffdd8a03c08589eac49906"
+    },
+    {
+      "brown": 100,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "1e7650fb8308389e992dc61723eec5c71226bbb077b2e2843921ff8d2b2d6971"
+    },
+    {
+      "brown": 100,
+      "visibility": 50,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "89027e464cfb99f8a14b6c979b4542ce08a78e1247a91953f39aed186a02309e"
+    },
+    {
+      "brown": 0,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "c69311724f6cef4c6b88e2eef2affe047f3e54d05e35dcdaa49a08674f9d7d27"
+    },
+    {
+      "brown": 0,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "bc579312e4788b1def01ad80db7df49937a7076fed661a5652ec420b03be57af"
+    },
+    {
+      "brown": 10,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "6c30dd2214cad08612b5b651dfb1ce8ba44adaa03ad9dd3d9efae1c48bf2972e"
+    },
+    {
+      "brown": 10,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "3015e1a8646c9bb43794056083bdced2c49127142896fb1a1ac53c655c5a6cd4"
+    },
+    {
+      "brown": 20,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "53df6b6625d30d22f9296d875c119f3c60ff4104a71f93deef9c2e8335878b65"
+    },
+    {
+      "brown": 20,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "32bbe5d48b2de137ac653ea71a1b16f517e52a0f93e6dfb1c18777718e3a4b24"
+    },
+    {
+      "brown": 30,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "ee6b1474b5ffb551660c389f72c3d1a91c34a2881f20e85c932b95ba4caf930f"
+    },
+    {
+      "brown": 30,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "55efb5e5e8941859e87fe0ee71714fc05247a117a8b083f759afe09fc9e4e3b2"
+    },
+    {
+      "brown": 40,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "58077b0699d6281dc36ca259113cbc4cdb818813a9c8592d0139e5f1d5d79e0e"
+    },
+    {
+      "brown": 40,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "3da2f72b3fcb119bffd5e5774638aa9b3a1193a95db4cd349a233e0da2223a43"
+    },
+    {
+      "brown": 50,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "6d6cebec52a0dca9c4a016df02081e0eb59a3e7958f07474b50105be658520f6"
+    },
+    {
+      "brown": 50,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "fff43a3957a114fb4a0d333e9f3320b40e95411e366596d4739199b7d05b1fda"
+    },
+    {
+      "brown": 60,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "eb0270691a614c90f1faf81d44234aed2a3b3556a00741d65c3096a168b9f57c"
+    },
+    {
+      "brown": 60,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "fd0f0c1a674694e8f70eeef3decbf3db90fc6cebc26ae0b08c176dd097519adc"
+    },
+    {
+      "brown": 70,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "6b011351832ccfafd854ea6fafcf49b650134abf2209c4d9779a6b3d9b767c51"
+    },
+    {
+      "brown": 70,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "6516d8b9cf37b5aeee81fef35a40bc86a4f0e4de3ef2ad25bf7549680fbca12e"
+    },
+    {
+      "brown": 80,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "8a3478dbb14f77cb5a8779b1a0396dac19516eeede8b416964668ba2d0fa2bec"
+    },
+    {
+      "brown": 80,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "334b7aba9b0a5182ceb90cacc0fea6aa83f513e88f8057e5fe4d0f5631216bf5"
+    },
+    {
+      "brown": 90,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "462998fa5945b6fef3ebfc84845351940d3207be4fccadfb9bb015a02bc6cece"
+    },
+    {
+      "brown": 90,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "8662a0fe9ed3289d04d83e3db2a2bbaf5d6668eb7f33f099efe898f89bcba761"
+    },
+    {
+      "brown": 100,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "ef1d91251cdbe31ec0dbdd6c1d09dd27d20f702ae163ef0db532ba248145936b"
+    },
+    {
+      "brown": 100,
+      "visibility": 60,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "30214eaa050b6f3c40387e5fbdb020c7952c75a919d5b1b9f1e2725f2ae025a6"
+    },
+    {
+      "brown": 0,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "b5fe6554cd1586112dfc30b36236e57604cdd51e607f849fa3a386d63469f8c5"
+    },
+    {
+      "brown": 0,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "a197e671d8cb46c2341714fb3992fa0de85c8e4975fecfe3510ce44335266a45"
+    },
+    {
+      "brown": 10,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "5876dc07434fda57f0def33ab5d18de6781d3ccc9fdace550bfbd03f29b466ba"
+    },
+    {
+      "brown": 10,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "500bb1d3b48e3392ed207d27f927a90472cd3d2a92deb028025e020f9efd1aee"
+    },
+    {
+      "brown": 20,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "77cd9718e91f0b113a574cc14fb29be00531e52174973e4b91d955ac369c2f76"
+    },
+    {
+      "brown": 20,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "7d2a9264cff4b35d045600333eed4eb60d5793708768d97bfc4cbc12364f9da0"
+    },
+    {
+      "brown": 30,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "90406db43d9e1554844dff996e1920e6bafbcf09315cb6baf0d8461159433a53"
+    },
+    {
+      "brown": 30,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "3b014bbc5f115248dba149e0990792da7776d5024260fe64a97aa747e039de74"
+    },
+    {
+      "brown": 40,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "7cc18bb057727bc36e2b438853e64aa69e5386850b6fd108826c7f7f342d20a5"
+    },
+    {
+      "brown": 40,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "55852257250e7c28a930524d4f4fe5d0210bc035eabe930a3574b827cd6e5808"
+    },
+    {
+      "brown": 50,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "0494e3797579b697fac1e38c59d7527e134a519650e657f9b695472696c0303c"
+    },
+    {
+      "brown": 50,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b695b40c74cdc1f1cf01390189ab7a1f198cebb47cc11113b8a78f7ca07d5b37"
+    },
+    {
+      "brown": 60,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "fd19e136c145e81a53a1163ca3101447389562027ab5469ea0f18e8392e72c8d"
+    },
+    {
+      "brown": 60,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "db9593b1b3d34bc4ab295e9974ebe4241c3aa93d073ad731b542921996b0535f"
+    },
+    {
+      "brown": 70,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "18e65c9c7621010138d1b61b68aa61577369ec20c1d67a8bec4de2efd2d66f79"
+    },
+    {
+      "brown": 70,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "543ce5713823b6eff89563a7558f3b834ee51365bfe9896a89a61eef851f424b"
+    },
+    {
+      "brown": 80,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "02ec434f545c707aa9fd314ac0063bb33bf6bcfbfe3d2113222e3dfe9a8d73e8"
+    },
+    {
+      "brown": 80,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "5de7737b25d39f7bf8bdc480c2c3ad4bc48e0ad6b40ae9897e2ef8881fdd6d3d"
+    },
+    {
+      "brown": 90,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "70e65c876d8e322ea27e7d32a85acb27f8c9ec1d7277318b57b2bd0dfc465258"
+    },
+    {
+      "brown": 90,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "2b844820c1819f712d3d036f5a1644d66f41c966367851982cbec3adae0fce66"
+    },
+    {
+      "brown": 100,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "90ae07aa8df580bba0f8b6d64d099a81a3ede2a2627acda8991c683d31c7aa2d"
+    },
+    {
+      "brown": 100,
+      "visibility": 70,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "4b45da5f558b8f70e97b9bdade8392fa4b4541b7e87f642f84d79f9fc3e2555e"
+    },
+    {
+      "brown": 0,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "5200aedde96112fc753d1f3ddeee8f296b4cbc366bfa05c6512b6dfa6c84d6b8"
+    },
+    {
+      "brown": 0,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "6fc502b6167854905e87cb497572c4ac11aba778dc9db4331102f4add144c86f"
+    },
+    {
+      "brown": 10,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "0244b47dfe62b19099410b7a02a8a9e6b0ec51161ce06a966c905d5d04d4d5c2"
+    },
+    {
+      "brown": 10,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b14b2d459756c97dc8ee30f3b4e3d0b276a6ec9c804ae6d0ba669a1389b9ae29"
+    },
+    {
+      "brown": 20,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "00f6a5f08c4236b58e4b2140a405acd99b6a97f10431c0b853d38079b06ba003"
+    },
+    {
+      "brown": 20,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "a3c191156e0c28d40ae6a35c7c868c1a43adc7d9bac4c89012c224f9d747f860"
+    },
+    {
+      "brown": 30,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2e9685485582db35b0cc74a8686a1ff55f50d35dd13ea4a492f1cfe5d0e29007"
+    },
+    {
+      "brown": 30,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "3734cc41ebb7ed1966b8c80a9287d4b7f8e82b7a740c904226cd21b332368dbd"
+    },
+    {
+      "brown": 40,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "86420421df72b4736ba0991a0094c47e3e9ccd5b5875163f31fa903f3328ceb4"
+    },
+    {
+      "brown": 40,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "72aba44d2c3cbcfa5173830fb231dc0e77258c515f16d205b3330b975a11e181"
+    },
+    {
+      "brown": 50,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "c7adcc34a3f227bc9f4f4ae75b98af2e4ca27286a7d0dc09ca7d2300d5a0c7ed"
+    },
+    {
+      "brown": 50,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "f3d9d218f905cd3898a23c03424331d3332a10a1d0663aebb2b941e2358f541a"
+    },
+    {
+      "brown": 60,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "710a8792d3e2be684485a330b8b4e8441a570ff2bd85f34d4e7ae2c0e1bbb50a"
+    },
+    {
+      "brown": 60,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "73625c78dab1aa1f922912607a62bd4db3ef2f923837297d3fc5c07946b10dcc"
+    },
+    {
+      "brown": 70,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "90a3f0f66647c17de25697eef8240d9980a0f414723beeb65de4fa249d30437f"
+    },
+    {
+      "brown": 70,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "191851875abfe509432a0fde6c3583ee07708957556ebe4cf453cba9f83e470b"
+    },
+    {
+      "brown": 80,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "e4a0c4c5d7c84071a9a9354a204a29393089bffed15c5abadbf943e6b79fdac0"
+    },
+    {
+      "brown": 80,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "883c4d7b1471cfa3d4e81f7ef43af05d2cc26655ceecf4f6d45d649abfa5df65"
+    },
+    {
+      "brown": 90,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "b4f57f65d0476cf8dfd7bf7bdb616ee04434100ab8318dfa631c729e7d8ccdca"
+    },
+    {
+      "brown": 90,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "00b3e401829a1ccb08720a3b184cde8aa6c8be1f8df5b23b644966fc8ca8fc1d"
+    },
+    {
+      "brown": 100,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "13387a02164f6f004009b7e764a315ae961373e233b567932ea207b73d51f93d"
+    },
+    {
+      "brown": 100,
+      "visibility": 80,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "0e65348557a4520b85901addac7cb04db0df3776225e07151a3767a149f2b2e0"
+    },
+    {
+      "brown": 0,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "2a8b007c4b480d6e1c15200f55dcc52fb56702c0d64249c91df21b6441a75bc4"
+    },
+    {
+      "brown": 0,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "8224c12f52833d73185a92f373b2c6983f468b137fe1fe07454f1e7879c51f00"
+    },
+    {
+      "brown": 10,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "60593dc8f7c0a81e7c74f1bdc2b37566fffa576785e73d61cae8712dcaf07887"
+    },
+    {
+      "brown": 10,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "f413264b7df7edfea42ba37b1d3957cd72afe6ba620522591c7dc1e386b9b028"
+    },
+    {
+      "brown": 20,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "b93792ffb65b7009d68ec35a453652d057b084fc6c83e2296943f4932af0d4bd"
+    },
+    {
+      "brown": 20,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b03a56de09af9f91d0604be9d80c7ad961fcfb699db68eee98042d9baa65e0f8"
+    },
+    {
+      "brown": 30,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "47af936eea7d8a5a9ba47196eca6cad485ac8a044217c872781f404632dbe530"
+    },
+    {
+      "brown": 30,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "23781970deaf262deff231791f1c67611b57fb028b26aacb42f9183c64d95422"
+    },
+    {
+      "brown": 40,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "9731f328f7c068ac98147cb6e278f3b47111ef4049f9cc0af60febc73bd81ca5"
+    },
+    {
+      "brown": 40,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "15a2bb6b849ca7030a12546e2e5852e85148d79e71066d1a1e39749eff56d85b"
+    },
+    {
+      "brown": 50,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "120e83935a142ae00d0d75d6fb8fb7426d4422dbd8aa1b285f824a17a58b2665"
+    },
+    {
+      "brown": 50,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "4ddf7d99e4e339b2cc34d93e4bd8e62b46839cf8df90070c0ebec81ef4fb7e07"
+    },
+    {
+      "brown": 60,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "6e8b946168c2d7a9ccd7fbd6f4485abdff9adbf482874f45ae241ef3b6fb0a12"
+    },
+    {
+      "brown": 60,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "f807a5d4b46fda48abdf90291ece6f20c57f5277b0f5af612f83a2c7fc5e8265"
+    },
+    {
+      "brown": 70,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "c9bb94d18c07332fbcfab9a62f8d067b2c8b07d26cb8083011713a64c3c3520f"
+    },
+    {
+      "brown": 70,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "32108242824e422e9135de7a0898b7b9de80e679920d268298b87aecc284da2a"
+    },
+    {
+      "brown": 80,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "9d6430cb997e3106f7dbef8728ad6d5e259d484812dcd0ab32172a0ed3399c37"
+    },
+    {
+      "brown": 80,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "7e19b3fdeee65086597b182543b7b9be0ad889cd45e0191864079d06875a194a"
+    },
+    {
+      "brown": 90,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "719939944a52e290dcc3b7e74982b663185fdcb0f3fcbf02404ca161f60b3d10"
+    },
+    {
+      "brown": 90,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "616549aaf6c38205af7b1df8421b7af6dc363ae7d000cb51170939d2b8d78680"
+    },
+    {
+      "brown": 100,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "8358444b60188c4c7efe98705769817bf5b257a16feb7baaa50a5b4b2dbafa6a"
+    },
+    {
+      "brown": 100,
+      "visibility": 90,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "a5bec9efbcb51db503b99a6b551eead6c05b240b5e143ad014873280a7461061"
+    },
+    {
+      "brown": 0,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "83c64cccd8f763217ea412ac5eb9a2bf4ae53d33713cc973bb9b7c455575b989"
+    },
+    {
+      "brown": 0,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "442549401879aee638227a69f7dddaaddd69f78dfd4c985f8efa73dc0f71a575"
+    },
+    {
+      "brown": 10,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "daa5b36b24c31da22f37c89585debdbb2875b8a1ce364779ce7c81bf71a8f224"
+    },
+    {
+      "brown": 10,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "cd4f00e2ff603bbc19bc82d2f6a5d65d5569aa577aee24eb88d39c6ae5facd41"
+    },
+    {
+      "brown": 20,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "c03e78ce35b67b599a5d22d84e796673202cab6babf508b010a1106e2a0cb995"
+    },
+    {
+      "brown": 20,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "fb91d8d4db4ae742f73821cc767f0af127f21ed6cc486845141cdb0293d3061f"
+    },
+    {
+      "brown": 30,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "efff28761b88f09046bc6bd6e4bdfbba6a754dc45d2fd7a66f4441f507978c7f"
+    },
+    {
+      "brown": 30,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "e811e1ed9c5b111d62dfa9a3b8e48af584610eb923f5735063a7029477efe733"
+    },
+    {
+      "brown": 40,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "f013c4654af7985d507737682b7a69928b1d21b69e6e7664190f9722b8eeb0f1"
+    },
+    {
+      "brown": 40,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "173241c8bcaf119d90ad2b661c7b3c74ef3f4e2286cdb60ba6409ff8ba683489"
+    },
+    {
+      "brown": 50,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "ddde06abbe86a51949e9a0076c4e10f98a4ab8a0843fe1fefc74cf29a6ee1ef2"
+    },
+    {
+      "brown": 50,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "b1ce941223ee616c27016b8d9e1913daa75102e21b6c8af8ceb6599c4672e2d8"
+    },
+    {
+      "brown": 60,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "9e08734d76bf7d943fdf4ad0ca927269dd7d831608bef3649e8259d509f3919d"
+    },
+    {
+      "brown": 60,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "f01560c8fe6753f39c74e30a60c04edc809927a5a9e47c98ddadcec67d7e786b"
+    },
+    {
+      "brown": 70,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "545944bd2a7258d5fc1b655637db97d5dd00807b3eebe0f481849afd1dedd8db"
+    },
+    {
+      "brown": 70,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "d71a923309aedf161806889eb5757e8416939c1dc8a1192e986dccbfa91cdf51"
+    },
+    {
+      "brown": 80,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "784f0727b43ef1f4ace682878ae9082bf4afcd362f9d8d21bba262013e702532"
+    },
+    {
+      "brown": 80,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "9df0753dba2ff977e80ef997c23cd282f2ff1b4f81f5e319561937be95e8bf62"
+    },
+    {
+      "brown": 90,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "3e407bea172f0214ace4717bb24fad36d32cf2d0fad2903c44cea9fb3aa4ae9e"
+    },
+    {
+      "brown": 90,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "0153a12110142bc07fb30390efa2c3f444b8b4114eb95cf8e5f3729d3fa7edb1"
+    },
+    {
+      "brown": 100,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020",
+      "sha256": "9f55f78e9cfbfc5044fea1debe36724d028ee799ffb69d4b91b9b7d14d25ebf8"
+    },
+    {
+      "brown": 100,
+      "visibility": 100,
+      "variant": "pes3ddf_pitch_2020_en",
+      "sha256": "c3bb112231caeba01e8e406d84d6cd83245ed426dbbfc14d96a3bc8c0d1fe7bc"
+    }
+  ],
+  "zero_to_ninety_validation": "220 shaders accepted by D3D11 WARP",
+  "hundred": "Existing confirmed stage bytes preserved exactly",
+  "visual_verified": false
+}
